@@ -1,0 +1,24 @@
+{
+    "name": "zenstruck/backup",
+    "description": "Library to create and archive backups",
+    "keywords": ["backup"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Bond",
+            "email": "kevinbond@gmail.com"
+        }
+    ],
+    "require": {
+        "psr/log": "~1.0",
+        "symfony/filesystem": "~2.3|~3.0",
+        "symfony/process": "~2.3|~3.0",
+        "symfony/console": "~2.3|~3.0"
+    },
+    "autoload": {
+        "psr-4": { "Zenstruck\\Backup\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Zenstruck\\Backup\\Tests\\": "tests/" }
+    }
+}
