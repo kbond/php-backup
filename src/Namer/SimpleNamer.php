@@ -32,8 +32,8 @@ class SimpleNamer implements Namer
     /**
      * {@inheritdoc}
      */
-    public static function getName()
+    public function getName()
     {
-        return 'simple';
+        return $this->name;
     }
 }

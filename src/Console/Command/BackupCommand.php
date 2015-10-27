@@ -9,8 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zenstruck\Backup\Console\Helper\BackupHelper;
-use Zenstruck\Backup\HasName;
+use Zenstruck\Backup\Destination;
+use Zenstruck\Backup\Profile;
 use Zenstruck\Backup\ProfileRegistry;
+use Zenstruck\Backup\Source;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -44,37 +46,33 @@ class BackupCommand extends Command
         $executor->backup($profile, $input->getOption('clear'));
     }
 
+    /**
+     * @param OutputInterface           $output
+     * @param ProfileRegistry|Profile[] $registry
+     */
     private function listProfiles(OutputInterface $output, ProfileRegistry $registry)
     {
+        if (0 === count($registry)) {
+            throw new \RuntimeException('No profiles configured.');
+        }
+
         $output->writeln('<info>Available Profiles:</info>');
         $output->writeln('');
 
         $table = new Table($output);
         $table->setHeaders(array('Name', 'Processor', 'Namer', 'Sources', 'Destinations'));
 
-        foreach ($registry->all() as $name => $profile) {
+        foreach ($registry as $profile) {
             $table->addRow(array(
-                $name,
+                $profile->getName(),
                 $profile->getProcessor()->getName(),
                 $profile->getNamer()->getName(),
-                $this->stringify($profile->getSources()),
-                $this->stringify($profile->getDestinations()),
+                implode(', ', array_keys($profile->getSources())),
+                implode(', ', array_keys($profile->getDestinations())),
             ));
         }
 
         $table->render();
         $output->writeln('');
-    }
-
-    /**
-     * @param HasName[] $names
-     *
-     * @return string
-     */
-    private function stringify(array $names)
-    {
-        return implode(', ', array_map(function (HasName $name) {
-            return $name->getName();
-        }, $names));
     }
 }

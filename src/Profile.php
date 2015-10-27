@@ -12,6 +12,7 @@ use Zenstruck\Backup\Source;
  */
 final class Profile
 {
+    private $name;
     private $scratchDir;
     private $namer;
     private $processor;
@@ -19,19 +20,35 @@ final class Profile
     private $destinations;
 
     /**
+     * @param string        $name
      * @param string        $scratchDir
      * @param Processor     $processor
      * @param Namer         $namer
      * @param Source[]      $sources
      * @param Destination[] $destinations
      */
-    public function __construct($scratchDir, Processor $processor, Namer $namer, array $sources, array $destinations)
+    public function __construct($name, $scratchDir, Processor $processor, Namer $namer, array $sources, array $destinations)
     {
+        $this->name = $name;
         $this->scratchDir = $scratchDir;
         $this->processor = $processor;
         $this->namer = $namer;
-        $this->sources = $sources;
-        $this->destinations = $destinations;
+
+        foreach ($sources as $source) {
+            $this->addSource($source);
+        }
+
+        foreach ($destinations as $destination) {
+            $this->addDestination($destination);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -72,5 +89,15 @@ final class Profile
     public function getDestinations()
     {
         return $this->destinations;
+    }
+
+    private function addSource(Source $source)
+    {
+        $this->sources[$source->getName()] = $source;
+    }
+
+    private function addDestination(Destination $destination)
+    {
+        $this->destinations[$destination->getName()] = $destination;
     }
 }

@@ -9,16 +9,8 @@ class ZipArchiveProcessor extends ArchiveProcessor
 {
     const DEFAULT_OPTIONS = '-r';
 
-    public function __construct($options = self::DEFAULT_OPTIONS)
+    public function __construct($name, $options = self::DEFAULT_OPTIONS)
     {
-        parent::__construct('zip', $options, 'zip');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getName()
-    {
-        return 'zip';
+        parent::__construct($name, 'zip', $options, 'zip');
     }
 }

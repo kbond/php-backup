@@ -25,13 +25,25 @@ final class ProfileBuilder
      */
     public function __construct(array $processors = array(), array $namers = array(), array $sources = array(), array $destinations = array())
     {
-        $this->processors = $processors;
-        $this->namers = $namers;
-        $this->sources = $sources;
-        $this->destinations = $destinations;
+        foreach ($processors as $processor) {
+            $this->addProcessor($processor);
+        }
+
+        foreach ($namers as $namer) {
+            $this->addNamer($namer);
+        }
+
+        foreach ($sources as $source) {
+            $this->addSource($source);
+        }
+
+        foreach ($destinations as $destination) {
+            $this->addDestination($destination);
+        }
     }
 
     /**
+     * @param string $name
      * @param string $scratchDir
      * @param string $processor
      * @param string $namer
@@ -40,9 +52,10 @@ final class ProfileBuilder
      *
      * @return Profile
      */
-    public function create($scratchDir, $processor, $namer, array $sources, array $destinations)
+    public function create($name, $scratchDir, $processor, $namer, array $sources, array $destinations)
     {
         return new Profile(
+            $name,
             $scratchDir,
             $this->getProcessor($processor),
             $this->getNamer($namer),
@@ -52,12 +65,11 @@ final class ProfileBuilder
     }
 
     /**
-     * @param string $name
      * @param Source $source
      */
-    public function addSource($name, Source $source)
+    public function addSource(Source $source)
     {
-        $this->sources[$name] = $source;
+        $this->sources[$source->getName()] = $source;
     }
 
     /**
@@ -67,7 +79,7 @@ final class ProfileBuilder
      */
     public function getSource($name)
     {
-        if (isset($this->sources[$name])) {
+        if (!isset($this->sources[$name])) {
             throw new \InvalidArgumentException(sprintf('Source "%s" is not registered.', $name));
         }
 
@@ -89,12 +101,11 @@ final class ProfileBuilder
     }
 
     /**
-     * @param string $name
      * @param Namer  $namer
      */
-    public function addNamer($name, Namer $namer)
+    public function addNamer(Namer $namer)
     {
-        $this->namers[$name] = $namer;
+        $this->namers[$namer->getName()] = $namer;
     }
 
     /**
@@ -104,7 +115,7 @@ final class ProfileBuilder
      */
     public function getNamer($name)
     {
-        if (isset($this->namers[$name])) {
+        if (!isset($this->namers[$name])) {
             throw new \InvalidArgumentException(sprintf('Namer "%s" is not registered.', $name));
         }
 
@@ -112,12 +123,11 @@ final class ProfileBuilder
     }
 
     /**
-     * @param string    $name
      * @param Processor $processor
      */
-    public function addProcessor($name, Processor $processor)
+    public function addProcessor(Processor $processor)
     {
-        $this->processors[$name] = $processor;
+        $this->processors[$processor->getName()] = $processor;
     }
 
     /**
@@ -127,7 +137,7 @@ final class ProfileBuilder
      */
     public function getProcessor($name)
     {
-        if (isset($this->processors[$name])) {
+        if (!isset($this->processors[$name])) {
             throw new \InvalidArgumentException(sprintf('Processor "%s" is not registered.', $name));
         }
 
@@ -135,12 +145,11 @@ final class ProfileBuilder
     }
 
     /**
-     * @param string      $name
      * @param Destination $destination
      */
-    public function addDestination($name, Destination $destination)
+    public function addDestination(Destination $destination)
     {
-        $this->destinations[$name] = $destination;
+        $this->destinations[$destination->getName()] = $destination;
     }
 
     /**
@@ -150,7 +159,7 @@ final class ProfileBuilder
      */
     public function getDestination($name)
     {
-        if (isset($this->destinations[$name])) {
+        if (!isset($this->destinations[$name])) {
             throw new \InvalidArgumentException(sprintf('Destination "%s" is not registered.', $name));
         }
 

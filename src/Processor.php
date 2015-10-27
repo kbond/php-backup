@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-interface Processor extends HasName
+interface Processor
 {
     /**
      * @param string          $scratchDir Path to the scratch directory
@@ -23,4 +23,9 @@ interface Processor extends HasName
      * @param LoggerInterface $logger
      */
     public function cleanup($filename, LoggerInterface $logger);
+
+    /**
+     * @return string
+     */
+    public function getName();
 }

@@ -9,16 +9,8 @@ class GzipArchiveProcessor extends ArchiveProcessor
 {
     const DEFAULT_OPTIONS = '-czvf';
 
-    public function __construct($options = self::DEFAULT_OPTIONS)
+    public function __construct($name, $options = self::DEFAULT_OPTIONS)
     {
-        parent::__construct('tar', $options, 'tar.gz');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getName()
-    {
-        return 'gzip';
+        parent::__construct($name, 'tar', $options, 'tar.gz');
     }
 }

@@ -10,10 +10,16 @@ use Zenstruck\Backup\Destination;
  */
 class StreamDestination implements Destination
 {
+    private $name;
     private $directory;
 
-    public function __construct($directory)
+    /**
+     * @param string $name
+     * @param string $directory
+     */
+    public function __construct($name, $directory)
     {
+        $this->name = $name;
         $this->directory = $directory;
     }
 
@@ -30,8 +36,8 @@ class StreamDestination implements Destination
     /**
      * {@inheritdoc}
      */
-    public static function getName()
+    public function getName()
     {
-        return 'stream';
+        return $this->name;
     }
 }

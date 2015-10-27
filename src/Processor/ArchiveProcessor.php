@@ -12,17 +12,20 @@ use Zenstruck\Backup\Processor;
  */
 abstract class ArchiveProcessor implements Processor
 {
+    private $name;
     private $command;
     private $options;
     private $extension;
 
     /**
+     * @param string $name
      * @param string $command
      * @param string $options
      * @param string $extension
      */
-    public function __construct($command, $options, $extension)
+    public function __construct($name, $command, $options, $extension)
     {
+        $this->name = $name;
         $this->command = $command;
         $this->options = $options;
         $this->extension = $extension;
@@ -64,5 +67,13 @@ abstract class ArchiveProcessor implements Processor
         if (file_exists($filename)) {
             unlink($filename);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

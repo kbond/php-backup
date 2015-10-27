@@ -12,12 +12,20 @@ class TimestampNamer implements Namer
     const DEFAULT_FORMAT = 'YmdHis';
     const DEFAULT_PREFIX = '';
 
+    private $name;
     private $format;
     private $prefix;
     private $timezone;
 
-    public function __construct($format = self::DEFAULT_FORMAT, $prefix = self::DEFAULT_PREFIX, $timezone = null)
+    /**
+     * @param string      $name
+     * @param string      $format
+     * @param string      $prefix
+     * @param string|null $timezone
+     */
+    public function __construct($name, $format = self::DEFAULT_FORMAT, $prefix = self::DEFAULT_PREFIX, $timezone = null)
     {
+        $this->name = $name;
         $this->format = $format;
         $this->prefix = $prefix;
         $this->timezone = $timezone ? new \DateTimeZone($timezone) : null;
@@ -36,8 +44,8 @@ class TimestampNamer implements Namer
     /**
      * {@inheritdoc}
      */
-    public static function getName()
+    public function getName()
     {
-        return 'timestamp';
+        return $this->name;
     }
 }

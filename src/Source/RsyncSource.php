@@ -11,18 +11,21 @@ use Zenstruck\Backup\Source;
  */
 class RsyncSource implements Source
 {
+    private $name;
     private $source;
     private $options;
 
     /**
+     * @param string $name
      * @param string $source            The rsync source
      * @param array  $additionalOptions Additional rsync options (useful for excludes)
      * @param array  $defaultOptions    Default rsync options
      */
-    public function __construct($source, array $additionalOptions = array(), array $defaultOptions = array())
+    public function __construct($name, $source, array $additionalOptions = array(), array $defaultOptions = array())
     {
         $defaultOptions = count($defaultOptions) ? $defaultOptions : static::getDefaultOptions();
 
+        $this->name = $name;
         $this->source = $source;
         $this->options = $defaultOptions;
 
@@ -63,8 +66,8 @@ class RsyncSource implements Source
     /**
      * {@inheritdoc}
      */
-    public static function getName()
+    public function getName()
     {
-        return 'rsync';
+        return $this->name;
     }
 }

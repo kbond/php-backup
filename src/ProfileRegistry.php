@@ -5,26 +5,27 @@ namespace Zenstruck\Backup;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class ProfileRegistry
+final class ProfileRegistry implements \Countable, \IteratorAggregate
 {
     /** @var Profile[] */
-    private $profiles;
+    private $profiles = array();
 
     /**
      * @param Profile[] $profiles
      */
     public function __construct(array $profiles = array())
     {
-        $this->profiles = $profiles;
+        foreach ($profiles as $profile) {
+            $this->add($profile);
+        }
     }
 
     /**
-     * @param string  $name
      * @param Profile $profile
      */
-    public function add($name, Profile $profile)
+    public function add(Profile $profile)
     {
-        $this->profiles[$name] = $profile;
+        $this->profiles[$profile->getName()] = $profile;
     }
 
     /**
@@ -34,7 +35,7 @@ final class ProfileRegistry
      */
     public function get($name)
     {
-        if (isset($this->profiles[$name])) {
+        if (!isset($this->profiles[$name])) {
             throw new \InvalidArgumentException(sprintf('Profile "%s" is not registered.', $name));
         }
 
@@ -42,10 +43,18 @@ final class ProfileRegistry
     }
 
     /**
-     * @return Profile[]
+     * {@inheritdoc}
      */
-    public function all()
+    public function getIterator()
     {
-        return $this->profiles;
+        return new \ArrayIterator($this->profiles);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return count($this->profiles);
     }
 }

@@ -13,6 +13,7 @@ class S3CmdDestination implements Destination
 {
     const DEFAULT_TIMEOUT = 300;
 
+    private $name;
     private $bucket;
     private $timeout;
     private $options;
@@ -22,8 +23,9 @@ class S3CmdDestination implements Destination
      * @param int    $timeout The process timeout in seconds
      * @param array  $options s3cmd command options
      */
-    public function __construct($bucket, $timeout = self::DEFAULT_TIMEOUT, array $options = array())
+    public function __construct($name, $bucket, $timeout = self::DEFAULT_TIMEOUT, array $options = array())
     {
+        $this->name = $name;
         $this->bucket = $bucket;
         $this->timeout = $timeout;
         $this->options = $options;
@@ -59,8 +61,8 @@ class S3CmdDestination implements Destination
     /**
      * {@inheritdoc}
      */
-    public static function getName()
+    public function getName()
     {
-        return 's3cmd';
+        return $this->name;
     }
 }
