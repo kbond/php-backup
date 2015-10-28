@@ -1,6 +1,7 @@
 {
     "name": "zenstruck/backup",
     "description": "Library to create and archive backups",
+    "homepage": "http://zenstruck.com/projects/php-backup",
     "keywords": ["backup"],
     "license": "MIT",
     "authors": [
