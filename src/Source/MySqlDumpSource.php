@@ -54,7 +54,7 @@ class MySqlDumpSource implements Source
 
         $processBuilder = new ProcessBuilder();
 
-        if ($this->sshHost && $this->sshUser) {
+        if (null !== $this->sshHost && null !== $this->sshUser) {
             $processBuilder->add('ssh');
             $processBuilder->add(sprintf('%s@%s', $this->sshUser, $this->sshHost));
             $processBuilder->add(sprintf('-p %s', $this->sshPort));
@@ -63,11 +63,11 @@ class MySqlDumpSource implements Source
         $processBuilder->add('mysqldump');
         $processBuilder->add(sprintf('-u%s', $this->user));
 
-        if ($this->host) {
+        if (null !== $this->host) {
             $processBuilder->add(sprintf('-h%s', $this->host));
         }
 
-        if ($this->password) {
+        if (null !== $this->password) {
             $processBuilder->add(sprintf('-p%s', $this->password));
         }
 
