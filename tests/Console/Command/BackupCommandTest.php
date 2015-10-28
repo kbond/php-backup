@@ -64,7 +64,7 @@ class BackupCommandTest extends TestCase
     {
         $commandTester = $this->createCommandTester();
         $commandTester->execute(
-            array('command' => 'zenstruck:backup', 'profile' => 'foo',)
+            array('command' => 'zenstruck:backup', 'profile' => 'foo')
         );
     }
 

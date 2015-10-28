@@ -43,5 +43,4 @@ final class BackupHelper extends Helper
     {
         return 'zenstruck_backup';
     }
-
 }

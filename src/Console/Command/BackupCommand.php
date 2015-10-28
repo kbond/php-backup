@@ -9,10 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zenstruck\Backup\Console\Helper\BackupHelper;
-use Zenstruck\Backup\Destination;
 use Zenstruck\Backup\Profile;
 use Zenstruck\Backup\ProfileRegistry;
-use Zenstruck\Backup\Source;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

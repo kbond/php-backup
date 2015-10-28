@@ -2,11 +2,6 @@
 
 namespace Zenstruck\Backup;
 
-use Zenstruck\Backup\Destination;
-use Zenstruck\Backup\Namer;
-use Zenstruck\Backup\Processor;
-use Zenstruck\Backup\Source;
-
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -101,7 +96,7 @@ final class ProfileBuilder
     }
 
     /**
-     * @param Namer  $namer
+     * @param Namer $namer
      */
     public function addNamer(Namer $namer)
     {
