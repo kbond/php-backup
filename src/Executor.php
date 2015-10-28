@@ -29,7 +29,7 @@ final class Executor
     public function backup(Profile $profile, $clear = false)
     {
         $scratchDir = $profile->getScratchDir();
-        $processor  = $profile->getProcessor();
+        $processor = $profile->getProcessor();
         $filesystem = new Filesystem();
 
         if ($clear) {
