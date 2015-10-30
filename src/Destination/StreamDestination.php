@@ -3,6 +3,10 @@
 namespace Zenstruck\Backup\Destination;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+use Zenstruck\Backup\Backup;
 use Zenstruck\Backup\Destination;
 
 /**
@@ -12,6 +16,7 @@ class StreamDestination implements Destination
 {
     private $name;
     private $directory;
+    private $filesystem;
 
     /**
      * @param string $name
@@ -21,6 +26,7 @@ class StreamDestination implements Destination
     {
         $this->name = $name;
         $this->directory = $directory;
+        $this->filesystem = new Filesystem();
     }
 
     /**
@@ -30,7 +36,42 @@ class StreamDestination implements Destination
     {
         $logger->info(sprintf('Copying %s to %s', $filename, $this->directory));
 
-        copy($filename, sprintf('%s/%s', $this->directory, basename($filename)));
+        $this->filesystem->copy($filename, $this->createPath($filename), true);
+
+        return $this->get($filename);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get($key)
+    {
+        return Backup::fromFile($this->createPath($key));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($key)
+    {
+        $this->filesystem->remove($this->createPath($key));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function all()
+    {
+        $backups = array();
+
+        /** @var SplFileInfo[] $files */
+        $files = Finder::create()->in($this->directory)->files()->depth(0)->sortByModifiedTime();
+
+        foreach ($files as $file) {
+            $backups[] = Backup::fromFile($file->getPathname());
+        }
+
+        return $backups;
     }
 
     /**
@@ -39,5 +80,15 @@ class StreamDestination implements Destination
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    private function createPath($key)
+    {
+        return sprintf('%s/%s', $this->directory, basename($key));
     }
 }
