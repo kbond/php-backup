@@ -96,7 +96,7 @@ class S3CmdDestination implements Destination
      */
     public function delete($key)
     {
-        $this->createYetImplementedException(__METHOD__);
+        throw new \BadMethodCallException(sprintf('%s::%s not yet implemented.', __CLASS__, __METHOD__));
     }
 
     /**
@@ -104,7 +104,19 @@ class S3CmdDestination implements Destination
      */
     public function all()
     {
-        $this->createYetImplementedException(__METHOD__);
+        $process = ProcessBuilder::create($this->options)
+            ->setPrefix(array('s3cmd', 'ls'))
+            ->add(trim($this->bucket, '/').'/')
+            ->setTimeout($this->timeout)
+            ->getProcess();
+
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException($process->getErrorOutput());
+        }
+
+        return $this->parseS3CmdListOutput($process->getOutput());
     }
 
     /**
@@ -126,12 +138,34 @@ class S3CmdDestination implements Destination
     }
 
     /**
-     * @param string $method
+     * @param string $output
      *
-     * @throws \BadMethodCallException
+     * @return Backup[]
      */
-    private function createYetImplementedException($method)
+    private function parseS3CmdListOutput($output)
     {
-        throw new \BadMethodCallException(sprintf('%s::%s not yet implemented.', __CLASS__, $method));
+        $backups = array();
+
+        foreach (explode("\n", $output) as $row) {
+            $backups[] = $this->parseS3CmdListRow($row);
+        }
+
+        return $backups;
+    }
+
+    /**
+     * @param string
+     *
+     * @return Backup
+     */
+    private function parseS3CmdListRow($row)
+    {
+        $columns = explode(' ', $row);
+
+        if (6 !== count($columns)) {
+            throw new \RuntimeException(sprintf('Error processing result: %s', $row));
+        }
+
+        return new Backup($columns[5], $columns[2], new \DateTime(sprintf('%s %s', $columns[0], $columns[1])));
     }
 }

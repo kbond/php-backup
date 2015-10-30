@@ -29,7 +29,7 @@ final class Backup
     public function __construct($key, $size, \DateTime $createdAt)
     {
         $this->key = $key;
-        $this->size = $size;
+        $this->size = (int) $size;
         $this->createdAt = $createdAt;
     }
 

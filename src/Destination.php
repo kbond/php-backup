@@ -30,7 +30,7 @@ interface Destination
     public function delete($key);
 
     /**
-     * @return Backup[] Ordered by created at.
+     * @return Backup[]
      */
     public function all();
 
