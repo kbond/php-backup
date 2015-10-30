@@ -31,7 +31,7 @@ class ListCommand extends ProfileActionCommand
      */
     protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output)
     {
-        foreach($profile->getDestinations() as $destination) {
+        foreach ($profile->getDestinations() as $destination) {
             $this->listBackups($destination, $output);
         }
     }
