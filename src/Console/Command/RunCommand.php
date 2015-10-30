@@ -15,12 +15,12 @@ use Zenstruck\Backup\ProfileRegistry;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class BackupCommand extends Command
+class RunCommand extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('zenstruck:backup')
+            ->setName('zenstruck:backup:run')
             ->setDescription('Run a backup')
             ->addArgument('profile', InputArgument::OPTIONAL, 'The backup profile to run (leave blank for listing)')
             ->addOption('clear', null, InputOption::VALUE_NONE, 'Set this flag to clear scratch directory before backup')
