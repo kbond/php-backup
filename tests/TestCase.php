@@ -109,6 +109,21 @@ class NullDestination1 implements Destination
         // noop
     }
 
+    public function get($key)
+    {
+        // noop
+    }
+
+    public function delete($key)
+    {
+        // noop
+    }
+
+    public function all()
+    {
+        // noop
+    }
+
     public function getName()
     {
         return 'null_destination1';

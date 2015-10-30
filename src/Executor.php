@@ -24,6 +24,8 @@ final class Executor
      * @param Profile $profile
      * @param bool    $clear
      *
+     * @return Backup[]
+     *
      * @throws \Exception
      */
     public function backup(Profile $profile, $clear = false)
@@ -50,7 +52,7 @@ final class Executor
         $filename = $processor->process($scratchDir, $profile->getNamer(), $this->logger);
 
         try {
-            $this->sendToDestinations($profile, $filename);
+            $backups = $this->sendToDestinations($profile, $filename);
         } catch (\Exception $e) {
             $processor->cleanup($filename, $this->logger);
 
@@ -59,12 +61,24 @@ final class Executor
 
         $processor->cleanup($filename, $this->logger);
         $this->logger->info('Done.');
+
+        return $backups;
     }
 
+    /**
+     * @param Profile $profile
+     * @param string  $filename
+     *
+     * @return Backup[]
+     */
     private function sendToDestinations(Profile $profile, $filename)
     {
+        $backups = array();
+
         foreach ($profile->getDestinations() as $destination) {
-            $destination->push($filename, $this->logger);
+            $backups[] = $destination->push($filename, $this->logger);
         }
+
+        return $backups;
     }
 }
