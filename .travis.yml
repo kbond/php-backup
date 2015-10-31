@@ -22,6 +22,7 @@ matrix:
 before_install:
   - mysql -e 'create database zenstruck_backup;'
   - composer self-update
+  - if [ "$(phpenv version-name)" == "5.3" ]; then composer remove gabrielelana/byte-units --no-update; fi;
 
 install: composer update --prefer-source $COMPOSER_FLAGS
 
