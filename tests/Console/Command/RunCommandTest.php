@@ -14,7 +14,7 @@ class RunCommandTest extends ProfileActionCommandTest
      */
     public function it_can_execute()
     {
-        $commandTester = $this->createCommandTester(array($this->createNullProfile('foo')), 2);
+        $commandTester = $this->createCommandTester(array($this->createNullProfile('foo')), 4);
         $commandTester->execute(
             array('command' => $this->getCommandName(), 'profile' => 'foo')
         );
@@ -25,7 +25,7 @@ class RunCommandTest extends ProfileActionCommandTest
      */
     public function it_can_execute_with_clear()
     {
-        $commandTester = $this->createCommandTester(array($this->createNullProfile('foo')), 3);
+        $commandTester = $this->createCommandTester(array($this->createNullProfile('foo')), 5);
         $commandTester->execute(
             array('command' => $this->getCommandName(), 'profile' => 'foo', '--clear' => true)
         );

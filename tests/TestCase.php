@@ -4,6 +4,7 @@ namespace Zenstruck\Backup\Tests;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Zenstruck\Backup\Backup;
 use Zenstruck\Backup\Destination;
 use Zenstruck\Backup\Namer;
 use Zenstruck\Backup\Namer\SimpleNamer;
@@ -106,7 +107,7 @@ class NullDestination1 implements Destination
 {
     public function push($filename, LoggerInterface $logger)
     {
-        // noop
+        return new Backup('null', 0, new \DateTime());
     }
 
     public function get($key)

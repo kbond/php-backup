@@ -76,7 +76,23 @@ final class Executor
         $backups = array();
 
         foreach ($profile->getDestinations() as $destination) {
-            $backups[] = $destination->push($filename, $this->logger);
+            $backup = $destination->push($filename, $this->logger);
+
+            $size = $backup->getSize();
+
+            if (class_exists('\\ByteUnits\\System')) {
+                $size = \ByteUnits\parse($size)->format('B');
+            }
+
+            $this->logger->info(
+                sprintf('Backup created for destination "%s" at: "%s" ', $destination->getName(), $backup->getKey()),
+                array(
+                    'size' => $size,
+                    'created_at' => $backup->getCreatedAt()->format('Y-m-d H:i:s')
+                )
+            );
+
+            $backups[] = $backup;
         }
 
         return $backups;
