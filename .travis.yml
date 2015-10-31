@@ -18,11 +18,14 @@ matrix:
   include:
     - php: 5.3
       env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 5.4
+      env: COMPOSER_FLAGS="--prefer-lowest"
 
 before_install:
   - mysql -e 'create database zenstruck_backup;'
   - composer self-update
   - if [ "$(phpenv version-name)" == "5.3" ]; then composer remove --dev gabrielelana/byte-units --no-update; fi;
+  - if [ "$(phpenv version-name)" == "5.3" ]; then composer remove --dev league/flysystem --no-update; fi;
 
 install: composer update --prefer-source $COMPOSER_FLAGS
 
