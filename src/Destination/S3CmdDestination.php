@@ -146,7 +146,15 @@ class S3CmdDestination implements Destination
     {
         $backups = array();
 
+        if (null === $output) {
+            return $backups;
+        }
+
         foreach (explode("\n", $output) as $row) {
+            if ('' === $row) {
+                continue;
+            }
+
             $backups[] = $this->parseS3CmdListRow($row);
         }
 
@@ -160,12 +168,12 @@ class S3CmdDestination implements Destination
      */
     private function parseS3CmdListRow($row)
     {
-        $columns = explode(' ', $row);
+        $columns = explode(' ', preg_replace('/\s+/', ' ', $row));
 
-        if (6 !== count($columns)) {
+        if (4 !== count($columns)) {
             throw new \RuntimeException(sprintf('Error processing result: %s', $row));
         }
 
-        return new Backup($columns[5], $columns[2], new \DateTime(sprintf('%s %s', $columns[0], $columns[1])));
+        return new Backup($columns[3], $columns[2], new \DateTime(sprintf('%s %s', $columns[0], $columns[1])));
     }
 }

@@ -44,6 +44,14 @@ class ListCommand extends ProfileActionCommand
         $table = new Table($output);
         $table->setHeaders(array('Key', 'Size', 'Created At'));
 
+        $backups = $destination->all();
+
+        if (empty($backups)) {
+            $output->writeln(sprintf("<error>No backups for %s</error>\n", $destination->getName()));
+
+            return;
+        }
+
         foreach ($destination->all() as $backup) {
             $table->addRow(array($backup->getKey(), $backup->getSize(), $backup->getCreatedAt()->format('Y-m-d H:i:s')));
         }
