@@ -88,7 +88,7 @@ final class Executor
                 sprintf('Backup created for destination "%s" at: "%s" ', $destination->getName(), $backup->getKey()),
                 array(
                     'size' => $size,
-                    'created_at' => $backup->getCreatedAt()->format('Y-m-d H:i:s')
+                    'created_at' => $backup->getCreatedAt()->format('Y-m-d H:i:s'),
                 )
             );
 
