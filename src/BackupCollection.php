@@ -7,12 +7,13 @@ namespace Zenstruck\Backup;
  */
 final class BackupCollection implements \IteratorAggregate, \Countable
 {
+    /** @var Backup[] */
     private $backups;
 
     /**
      * @param Backup[] $backups
      */
-    public function __construct(array $backups)
+    public function __construct(array $backups = array())
     {
         usort($backups, function (Backup $a, Backup $b) {
             $timestampA = $a->getCreatedAt()->getTimestamp();
@@ -39,6 +40,28 @@ final class BackupCollection implements \IteratorAggregate, \Countable
     }
 
     /**
+     * @return Backup[]
+     */
+    public function all()
+    {
+        return $this->backups;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalFileSize()
+    {
+        $size = 0;
+
+        foreach ($this->backups as $backup) {
+            $size += $backup->getSize();
+        }
+
+        return $size;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()
@@ -53,6 +76,4 @@ final class BackupCollection implements \IteratorAggregate, \Countable
     {
         return count($this->backups);
     }
-
-
 }

@@ -62,7 +62,7 @@ abstract class DestinationTest extends TestCase
         $backups = $destination->all();
 
         $this->assertCount(2, $backups);
-        $this->assertInstanceOf('Zenstruck\Backup\Backup', $backups->get(1));
+        $this->assertInstanceOf('Zenstruck\Backup\Backup', $backups->get(0));
         $this->assertInstanceOf('Zenstruck\Backup\Backup', $backups->get(1));
     }
 
