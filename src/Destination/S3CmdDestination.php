@@ -48,11 +48,7 @@ class S3CmdDestination implements Destination
             ->setTimeout($this->timeout)
             ->getProcess();
 
-        $process->run(
-            function ($type, $buffer) use ($logger) {
-                $logger->debug($buffer);
-            }
-        );
+        $process->run();
 
         if (!$process->isSuccessful() || false !== strpos($process->getErrorOutput(), 'ERROR:')) {
             throw new \RuntimeException($process->getErrorOutput());

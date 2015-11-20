@@ -58,11 +58,7 @@ class RsyncSource implements Source
             ->add($scratchDir)
             ->getProcess();
 
-        $process->run(
-            function ($type, $buffer) use ($logger) {
-                $logger->debug($buffer);
-            }
-        );
+        $process->run();
 
         if (!$process->isSuccessful()) {
             throw new \RuntimeException($process->getErrorOutput());
