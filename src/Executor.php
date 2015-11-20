@@ -24,7 +24,7 @@ final class Executor
      * @param Profile $profile
      * @param bool    $clear
      *
-     * @return Backup[]
+     * @return BackupCollection
      *
      * @throws \Exception
      */
@@ -62,7 +62,7 @@ final class Executor
         $processor->cleanup($filename, $this->logger);
         $this->logger->info('Done.');
 
-        return $backups;
+        return new BackupCollection($backups);
     }
 
     /**

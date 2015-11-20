@@ -30,7 +30,7 @@ interface Destination
     public function delete($key);
 
     /**
-     * @return Backup[]
+     * @return BackupCollection
      */
     public function all();
 
