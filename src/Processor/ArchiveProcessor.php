@@ -12,23 +12,28 @@ use Zenstruck\Backup\Processor;
  */
 abstract class ArchiveProcessor implements Processor
 {
+    const DEFAULT_TIMEOUT = 300;
+
     private $name;
     private $command;
     private $options;
     private $extension;
+    private $timeout;
 
     /**
      * @param string $name
      * @param string $command
      * @param string $options
      * @param string $extension
+     * @param int    $timeout
      */
-    public function __construct($name, $command, $options, $extension)
+    public function __construct($name, $command, $options, $extension, $timeout = self::DEFAULT_TIMEOUT)
     {
         $this->name = $name;
         $this->command = $command;
         $this->options = $options;
         $this->extension = $extension;
+        $this->timeout = $timeout;
     }
 
     /**
@@ -42,6 +47,7 @@ abstract class ArchiveProcessor implements Processor
 
         $process = ProcessBuilder::create(array($this->command, $this->options, $filename, './'))
             ->setWorkingDirectory($scratchDir)
+            ->setTimeout($this->timeout)
             ->getProcess();
 
         $process->run(

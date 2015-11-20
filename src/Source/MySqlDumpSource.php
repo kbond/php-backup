@@ -13,6 +13,7 @@ class MySqlDumpSource implements Source
 {
     const DEFAULT_USER = 'root';
     const DEFAULT_SSH_PORT = 22;
+    const DEFAULT_TIMEOUT = 300;
 
     private $name;
     private $database;
@@ -22,6 +23,7 @@ class MySqlDumpSource implements Source
     private $sshHost;
     private $sshUser;
     private $sshPort;
+    private $timeout;
 
     /**
      * @param string      $name
@@ -32,8 +34,9 @@ class MySqlDumpSource implements Source
      * @param string|null $sshHost
      * @param string|null $sshUser
      * @param int         $sshPort
+     * @param int         $timeout
      */
-    public function __construct($name, $database, $host = null, $user = self::DEFAULT_USER, $password = null, $sshHost = null, $sshUser = null, $sshPort = self::DEFAULT_SSH_PORT)
+    public function __construct($name, $database, $host = null, $user = self::DEFAULT_USER, $password = null, $sshHost = null, $sshUser = null, $sshPort = self::DEFAULT_SSH_PORT, $timeout = self::DEFAULT_TIMEOUT)
     {
         $this->name = $name;
         $this->database = $database;
@@ -43,6 +46,7 @@ class MySqlDumpSource implements Source
         $this->sshHost = $sshHost;
         $this->sshUser = $sshUser;
         $this->sshPort = $sshPort;
+        $this->timeout = $timeout;
     }
 
     /**
@@ -53,6 +57,7 @@ class MySqlDumpSource implements Source
         $logger->info(sprintf('Running mysqldump for: %s', $this->database));
 
         $processBuilder = new ProcessBuilder();
+        $processBuilder->setTimeout($this->timeout);
 
         if (null !== $this->sshHost && null !== $this->sshUser) {
             $processBuilder->add('ssh');

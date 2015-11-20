@@ -11,23 +11,28 @@ use Zenstruck\Backup\Source;
  */
 class RsyncSource implements Source
 {
+    const DEFAULT_TIMEOUT = 300;
+
     private $name;
     private $source;
     private $options;
+    private $timeout;
 
     /**
      * @param string $name
      * @param string $source            The rsync source
      * @param array  $additionalOptions Additional rsync options (useful for excludes)
      * @param array  $defaultOptions    Default rsync options
+     * @param int    $timeout
      */
-    public function __construct($name, $source, array $additionalOptions = array(), array $defaultOptions = array())
+    public function __construct($name, $source, array $additionalOptions = array(), array $defaultOptions = array(), $timeout = self::DEFAULT_TIMEOUT)
     {
         $defaultOptions = count($defaultOptions) ? $defaultOptions : static::getDefaultOptions();
 
         $this->name = $name;
         $this->source = $source;
         $this->options = $defaultOptions;
+        $this->timeout = $timeout;
 
         foreach ($additionalOptions as $option) {
             $this->options[] = $option;
@@ -47,6 +52,7 @@ class RsyncSource implements Source
         $logger->info(sprintf('Syncing files from: %s', $this->source));
 
         $process = ProcessBuilder::create($this->options)
+            ->setTimeout($this->timeout)
             ->setPrefix('rsync')
             ->add($this->source)
             ->add($scratchDir)
