@@ -5,6 +5,7 @@ namespace Zenstruck\Backup\Tests;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Zenstruck\Backup\Backup;
+use Zenstruck\Backup\BackupCollection;
 use Zenstruck\Backup\Destination;
 use Zenstruck\Backup\Namer;
 use Zenstruck\Backup\Namer\SimpleNamer;
@@ -20,6 +21,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     /** @var Filesystem */
     protected $filesystem;
 
+    /** @var BackupCollection */
+    protected $collection;
+
     protected function setUp()
     {
         $this->filesystem = new Filesystem();
@@ -27,6 +31,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $this->removeScratchDir();
 
         $this->filesystem->mkdir($this->getScratchDir());
+
+        $this->collection = new BackupCollection(array(
+            new Backup('today', 5, new \DateTime('today')),
+            new Backup('tomorrow', 9, new \DateTime('tomorrow')),
+            new Backup('yesterday', 22, new \DateTime('yesterday')),
+        ));
     }
 
     protected function tearDown()
