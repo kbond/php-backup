@@ -10,7 +10,6 @@ final class ProgressiveRotateRuleCollection implements \IteratorAggregate, \Coun
     /** @var ProgressiveRotateRule[] */
     private $rules;
 
-
     public static function createFromArray(array $rules)
     {
         $parsedRules = array();

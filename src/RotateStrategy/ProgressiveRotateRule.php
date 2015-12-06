@@ -28,7 +28,7 @@ final class ProgressiveRotateRule
 
     /**
      * @param ProgressiveRotateFrequency $frequency
-     * @param ProgressiveRotateMaxAge $maxAge
+     * @param ProgressiveRotateMaxAge    $maxAge
      */
     public function __construct(ProgressiveRotateFrequency $frequency, ProgressiveRotateMaxAge $maxAge)
     {
@@ -45,9 +45,9 @@ final class ProgressiveRotateRule
     }
 
     /**
-     * @param Backup $backup
+     * @param Backup    $backup
      * @param \DateTime $now
-     * @param int $maxAgeTolerance seconds
+     * @param int       $maxAgeTolerance seconds
      */
     public function shouldKeep(Backup $backup, \DateTime $now, $maxAgeTolerance = 0)
     {

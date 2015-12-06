@@ -41,9 +41,9 @@ final class ProgressiveRotateMaxAge
     }
 
     /**
-     * @param Backup $backup
+     * @param Backup    $backup
      * @param \DateTime $now
-     * @param int $maxAgeTolerance seconds
+     * @param int       $maxAgeTolerance seconds
      */
     public function shouldKeep(Backup $backup, \DateTime $now, $maxAgeTolerance = 0)
     {

@@ -105,9 +105,10 @@ final class ProgressiveRotateFrequency
             $bin->setTimestamp(strtotime($createdAt->format($this->frequencyFeatures['baseFormat'])));
 
             $nextBin = new \DateTime();
-            for($nextBin = new \DateTime(), $nextBin->setTimestamp($bin->getTimestamp()); $nextBin < $createdAt; $nextBin = $nextBin->add($this->valueAsInterval)) {
+            for ($nextBin = new \DateTime(), $nextBin->setTimestamp($bin->getTimestamp()); $nextBin < $createdAt; $nextBin = $nextBin->add($this->valueAsInterval)) {
                 $bin->setTimestamp($nextBin->getTimestamp());
             }
+
             return $bin->format('U');
         }
     }

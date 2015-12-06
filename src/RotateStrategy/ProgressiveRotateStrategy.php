@@ -33,18 +33,15 @@ class ProgressiveRotateStrategy implements RotateStrategy
         $earliestBackupsInBinsByRules = array();
 
         for ($i = 0; $i < $ruleCount; ++$i) {
-
             $rule = $this->ruleCollection->get($i);
             $earliestBackupsInBinsByRules[$i] = array();
 
-            foreach($backups as $backup) {
-
+            foreach ($backups as $backup) {
                 if ($rule->shouldKeep($backup, $now, $this->maxAgeTolerance)) {
                     $bin = $rule->extractBin($backup);
 
                     if (!array_key_exists($bin, $earliestBackupsInBinsByRules[$i])) {
                         $earliestBackupsInBinsByRules[$i][$bin] = $backup;
-
                     } else {
                         $currentEarliestBackupInTimeBin = $earliestBackupsInBinsByRules[$i][$bin];
 
@@ -63,9 +60,9 @@ class ProgressiveRotateStrategy implements RotateStrategy
         $backupsToKeep = array_unique($backupsToKeep, SORT_REGULAR);
 
         $backupsToRemove = array();
-        foreach($backups as $backup) {
+        foreach ($backups as $backup) {
             if (!in_array($backup, $backupsToKeep)) {
-                $backupsToRemove []= $backup;
+                $backupsToRemove [] = $backup;
             }
         }
 
