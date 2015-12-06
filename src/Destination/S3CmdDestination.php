@@ -5,6 +5,7 @@ namespace Zenstruck\Backup\Destination;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\ProcessBuilder;
 use Zenstruck\Backup\Backup;
+use Zenstruck\Backup\BackupCollection;
 use Zenstruck\Backup\Destination;
 
 /**
@@ -112,7 +113,7 @@ class S3CmdDestination implements Destination
             throw new \RuntimeException($process->getErrorOutput());
         }
 
-        return $this->parseS3CmdListOutput($process->getOutput());
+        return new BackupCollection($this->parseS3CmdListOutput($process->getOutput()));
     }
 
     /**

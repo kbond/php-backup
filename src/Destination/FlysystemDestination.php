@@ -5,6 +5,7 @@ namespace Zenstruck\Backup\Destination;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
 use Zenstruck\Backup\Backup;
+use Zenstruck\Backup\BackupCollection;
 use Zenstruck\Backup\Destination;
 
 /**
@@ -79,7 +80,7 @@ class FlysystemDestination implements Destination
             );
         }
 
-        return $backups;
+        return new BackupCollection($backups);
     }
 
     /**

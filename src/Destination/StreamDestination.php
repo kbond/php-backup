@@ -7,6 +7,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Zenstruck\Backup\Backup;
+use Zenstruck\Backup\BackupCollection;
 use Zenstruck\Backup\Destination;
 
 /**
@@ -71,7 +72,7 @@ class StreamDestination implements Destination
             $backups[] = Backup::fromFile($file->getPathname());
         }
 
-        return $backups;
+        return new BackupCollection($backups);
     }
 
     /**
