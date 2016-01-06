@@ -8,8 +8,7 @@
 [![Latest Stable Version](http://img.shields.io/packagist/v/zenstruck/backup.svg?style=flat-square)](https://packagist.org/packages/zenstruck/backup)
 [![License](http://img.shields.io/packagist/l/zenstruck/backup.svg?style=flat-square)](https://packagist.org/packages/zenstruck/backup)
 
-Create and archive backups. [A Symfony Bundle is available](https://github.com/kbond/ZenstruckBackupBundle)
-that wraps this library.
+Create and archive backups. [A Symfony Bundle](https://github.com/kbond/ZenstruckBackupBundle) and a [Laravel package](https://github.com/vinkla/backup) is available that wraps this library.
 
 An "executor" takes a backup profile and processes it. A backup "profile" consists of 4 parts:
 
