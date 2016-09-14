@@ -48,4 +48,20 @@ class TimestampNamer implements Namer
     {
         return $this->name;
     }
+
+    /**
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
 }
