@@ -16,7 +16,7 @@ class RotatedDestinationTest extends DestinationTest
      */
     public function can_run_rotation()
     {
-        $logger = $this->getMock('Psr\Log\LoggerInterface');
+        $logger = $this->createMock('Psr\Log\LoggerInterface');
         $logger->expects($this->exactly(3))
             ->method('info')
             ->withConsecutive(
@@ -25,7 +25,7 @@ class RotatedDestinationTest extends DestinationTest
                 array('Removing backup "tomorrow" from destination "my_destination"')
             );
         $file = $this->getFixtureDir().'/foo.txt';
-        $destination = $this->getMock('Zenstruck\Backup\Destination');
+        $destination = $this->createMock('Zenstruck\Backup\Destination');
         $destination->expects($this->once())
             ->method('push')
             ->with($file, $logger);
@@ -38,7 +38,7 @@ class RotatedDestinationTest extends DestinationTest
         $destination->expects($this->exactly(3))
             ->method('getName')
             ->willReturn('my_destination');
-        $strategy = $this->getMock('Zenstruck\Backup\RotateStrategy');
+        $strategy = $this->createMock('Zenstruck\Backup\RotateStrategy');
         $strategy->expects($this->once())
             ->method('getBackupsToRemove')
             ->with($this->collection, $this->isInstanceOf('Zenstruck\Backup\Backup'))

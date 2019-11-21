@@ -68,7 +68,7 @@ abstract class ProfileActionCommandTest extends TestCase
      */
     protected function createCommandTester(array $profiles = array(), $infoCalls = 0)
     {
-        $logger = $this->getMock('Psr\Log\LoggerInterface');
+        $logger = $this->createMock('Psr\Log\LoggerInterface');
         $logger
             ->expects($this->exactly($infoCalls))
             ->method('info');

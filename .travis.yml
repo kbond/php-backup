@@ -1,36 +1,33 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
   - 5.6
   - 7.0
   - 7.1
-  - hhvm
+  - 7.2
+  - 7.3
+
+services:
+  - mysql
 
 sudo: false
 
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.composer/cache
 
 matrix:
   include:
-    - php: 5.3
-      env: COMPOSER_FLAGS="--prefer-lowest"
-    - php: 5.4
+    - php: 5.6
       env: COMPOSER_FLAGS="--prefer-lowest"
 
 before_install:
   - mysql -e 'create database zenstruck_backup;'
   - composer self-update
-  - if [ "$(phpenv version-name)" == "5.3" ]; then composer remove --dev gabrielelana/byte-units --no-update; fi;
-  - if [ "$(phpenv version-name)" == "5.3" ]; then composer remove --dev league/flysystem --no-update; fi;
 
 install: composer update --prefer-source $COMPOSER_FLAGS
 
-script: phpunit --coverage-clover=coverage.clover
+script: vendor/bin/phpunit --coverage-clover=coverage.clover
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
