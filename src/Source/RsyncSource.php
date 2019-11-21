@@ -3,7 +3,7 @@
 namespace Zenstruck\Backup\Source;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 use Zenstruck\Backup\Source;
 
 /**
@@ -51,12 +51,8 @@ class RsyncSource implements Source
     {
         $logger->info(sprintf('Syncing files from: %s', $this->source));
 
-        $process = ProcessBuilder::create($this->options)
-            ->setTimeout($this->timeout)
-            ->setPrefix('rsync')
-            ->add($this->source)
-            ->add($scratchDir)
-            ->getProcess();
+        $args = array_merge(['rsync'], $this->options, [$this->source, $scratchDir]);
+        $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
 

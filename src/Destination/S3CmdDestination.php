@@ -3,7 +3,7 @@
 namespace Zenstruck\Backup\Destination;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 use Zenstruck\Backup\Backup;
 use Zenstruck\Backup\BackupCollection;
 use Zenstruck\Backup\Destination;
@@ -42,12 +42,8 @@ class S3CmdDestination implements Destination
 
         $logger->info(sprintf('Uploading %s to: %s', $filename, $destination));
 
-        $process = ProcessBuilder::create($this->options)
-            ->setPrefix(array('s3cmd', 'put'))
-            ->add($filename)
-            ->add($destination)
-            ->setTimeout($this->timeout)
-            ->getProcess();
+        $args = array_merge(['s3cmd', 'put'], $this->options, [$filename, $destination]);
+        $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
 
@@ -65,11 +61,8 @@ class S3CmdDestination implements Destination
     {
         $destination = $this->createPath($key);
 
-        $process = ProcessBuilder::create($this->options)
-            ->setPrefix(array('s3cmd', 'info'))
-            ->add($destination)
-            ->setTimeout($this->timeout)
-            ->getProcess();
+        $args = array_merge(['s3cmd', 'info'], $this->options, [$destination]);
+        $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
 
@@ -101,11 +94,8 @@ class S3CmdDestination implements Destination
      */
     public function all()
     {
-        $process = ProcessBuilder::create($this->options)
-            ->setPrefix(array('s3cmd', 'ls'))
-            ->add(trim($this->bucket, '/').'/')
-            ->setTimeout($this->timeout)
-            ->getProcess();
+        $args = array_merge(['s3cmd', 'ls'], $this->options, [trim($this->bucket, '/').'/']);
+        $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
 

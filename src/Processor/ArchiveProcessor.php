@@ -3,7 +3,7 @@
 namespace Zenstruck\Backup\Processor;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 use Zenstruck\Backup\Namer;
 use Zenstruck\Backup\Processor;
 
@@ -45,10 +45,7 @@ abstract class ArchiveProcessor implements Processor
 
         $logger->info(sprintf('Archiving files to: %s', $filename));
 
-        $process = ProcessBuilder::create(array($this->command, $this->options, $filename, './'))
-            ->setWorkingDirectory($scratchDir)
-            ->setTimeout($this->timeout)
-            ->getProcess();
+        $process = new Process([$this->command, $this->options, $filename, './'], $scratchDir, null, null, $this->timeout);
 
         $process->run();
 

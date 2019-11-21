@@ -3,7 +3,7 @@
 namespace Zenstruck\Backup\Source;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 use Zenstruck\Backup\Source;
 
 /**
@@ -56,29 +56,28 @@ class MySqlDumpSource implements Source
     {
         $logger->info(sprintf('Running mysqldump for: %s', $this->database));
 
-        $processBuilder = new ProcessBuilder();
-        $processBuilder->setTimeout($this->timeout);
+        $args = [];
 
         if (null !== $this->sshHost && null !== $this->sshUser) {
-            $processBuilder->add('ssh');
-            $processBuilder->add(sprintf('%s@%s', $this->sshUser, $this->sshHost));
-            $processBuilder->add(sprintf('-p %s', $this->sshPort));
+            $args[] = 'ssh';
+            $args[] = sprintf('%s@%s', $this->sshUser, $this->sshHost);
+            $args[] = sprintf('-p %s', $this->sshPort);
         }
 
-        $processBuilder->add('mysqldump');
-        $processBuilder->add(sprintf('-u%s', $this->user));
+        $args[] = 'mysqldump';
+        $args[] = sprintf('-u%s', $this->user);
 
         if (null !== $this->host) {
-            $processBuilder->add(sprintf('-h%s', $this->host));
+            $args[] = sprintf('-h%s', $this->host);
         }
 
         if (null !== $this->password) {
-            $processBuilder->add(sprintf('-p%s', $this->password));
+            $args[] = sprintf('-p%s', $this->password);
         }
 
-        $processBuilder->add($this->database);
+        $args[] = $this->database;
 
-        $process = $processBuilder->getProcess();
+        $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
 
