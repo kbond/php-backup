@@ -21,6 +21,8 @@ abstract class ProfileActionCommand extends BaseCommand
      * @param Profile         $profile
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @return int
      */
     abstract protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output);
 
@@ -34,10 +36,10 @@ abstract class ProfileActionCommand extends BaseCommand
         if (!$profile = $input->getArgument('profile')) {
             $this->listProfiles($output, $registry);
 
-            return;
+            return 0;
         }
 
-        $this->doExecute($registry->get($profile), $input, $output);
+        return $this->doExecute($registry->get($profile), $input, $output);
     }
 
     /**

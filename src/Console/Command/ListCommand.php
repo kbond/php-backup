@@ -34,6 +34,8 @@ class ListCommand extends ProfileActionCommand
         foreach ($profile->getDestinations() as $destination) {
             $this->listBackups($destination, $output);
         }
+
+        return 0;
     }
 
     private function listBackups(Destination $destination, OutputInterface $output)

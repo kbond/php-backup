@@ -32,5 +32,7 @@ class RunCommand extends ProfileActionCommand
     protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output)
     {
         $this->getBackupHelper()->getExecutor()->backup($profile, $input->getOption('clear'));
+
+        return 0;
     }
 }
