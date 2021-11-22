@@ -2,6 +2,8 @@
 
 namespace Zenstruck\Backup;
 
+use Symfony\Component\Console\Helper\Helper;
+
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -47,6 +49,14 @@ final class Backup
     public function getSize()
     {
         return $this->size;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormattedSize()
+    {
+        return \class_exists(Helper::class) ? Helper::formatMemory($this->size) : $this->size.' B';
     }
 
     /**

@@ -55,13 +55,7 @@ class ListCommand extends ProfileActionCommand
         }
 
         foreach ($destination->all() as $backup) {
-            $size = $backup->getSize();
-
-            if (class_exists('\\ByteUnits\\System')) {
-                $size = \ByteUnits\parse($size)->format('B');
-            }
-
-            $table->addRow(array($backup->getKey(), $size, $backup->getCreatedAt()->format('Y-m-d H:i:s')));
+            $table->addRow(array($backup->getKey(), $backup->getFormattedSize(), $backup->getCreatedAt()->format('Y-m-d H:i:s')));
         }
 
         $table->render();
