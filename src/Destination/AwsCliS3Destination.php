@@ -120,6 +120,13 @@ final class AwsCliS3Destination implements Destination
                 continue;
             }
 
+            $backup = $this->parseS3CmdListRow($row);
+
+            if (!$backup->getSize()) {
+                // first item is the directory, so exclude
+                continue;
+            }
+
             $backups[] = $this->parseS3CmdListRow($row);
         }
 
