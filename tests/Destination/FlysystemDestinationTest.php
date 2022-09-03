@@ -11,7 +11,7 @@ use Zenstruck\Backup\Destination\FlysystemDestination;
  */
 class FlysystemDestinationTest extends DestinationTest
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('League\Flysystem\Filesystem')) {
             $this->markTestSkipped('Flysystem not available.');
@@ -20,7 +20,7 @@ class FlysystemDestinationTest extends DestinationTest
         parent::setUp();
     }
 
-    protected function createDestination($directory, $name = 'foo')
+    protected function createDestination(string $directory, string $name = 'foo'): FlysystemDestination
     {
         return new FlysystemDestination($name, new Filesystem(new Local($directory)));
     }

@@ -7,13 +7,7 @@ namespace Zenstruck\Backup;
  */
 interface Namer
 {
-    /**
-     * @return string
-     */
-    public function generate();
+    public function generate(): string;
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 }

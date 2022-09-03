@@ -16,15 +16,12 @@ use Zenstruck\Backup\Source;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    /** @var Filesystem */
-    protected $filesystem;
+    protected Filesystem $filesystem;
+    protected BackupCollection $collection;
 
-    /** @var BackupCollection */
-    protected $collection;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem();
 
@@ -39,22 +36,22 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         ));
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->removeScratchDir();
     }
 
-    protected function getFixtureDir()
+    protected function getFixtureDir(): string
     {
         return __DIR__.'/Fixtures';
     }
 
-    protected function getScratchDir()
+    protected function getScratchDir(): string
     {
         return sys_get_temp_dir().'/zenstruck-backup-bundle';
     }
 
-    protected function createNullProfile($name = 'null_profile')
+    protected function createNullProfile($name = 'null_profile'): Profile
     {
         return new Profile(
             $name,
@@ -76,17 +73,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
 class NullProcessor implements Processor
 {
-    public function getName()
+    public function getName(): string
     {
         return 'null_processor';
     }
 
-    public function process($scratchDir, Namer $namer, LoggerInterface $logger)
+    public function process(string $scratchDir, Namer $namer, LoggerInterface $logger): string
     {
-        // noop
+        return "";
     }
 
-    public function cleanup($filename, LoggerInterface $logger)
+    public function cleanup(string $filename, LoggerInterface $logger)
     {
         // noop
     }
@@ -94,12 +91,12 @@ class NullProcessor implements Processor
 
 class NullSource1 implements Source
 {
-    public function getName()
+    public function getName(): string
     {
         return 'null_source1';
     }
 
-    public function fetch($scratchDir, LoggerInterface $logger)
+    public function fetch(string $scratchDir, LoggerInterface $logger)
     {
         // noop
     }
@@ -107,7 +104,7 @@ class NullSource1 implements Source
 
 class NullSource2 extends NullSource1
 {
-    public function getName()
+    public function getName(): string
     {
         return 'null_source2';
     }
@@ -115,14 +112,14 @@ class NullSource2 extends NullSource1
 
 class NullDestination1 implements Destination
 {
-    public function push($filename, LoggerInterface $logger)
+    public function push(string $filename, LoggerInterface $logger): Backup
     {
         return new Backup('null', 0, new \DateTime());
     }
 
-    public function get($key)
+    public function get(string $key): Backup
     {
-        // noop
+        return new Backup('null', 0, new \DateTime());
     }
 
     public function delete($key)
@@ -130,12 +127,12 @@ class NullDestination1 implements Destination
         // noop
     }
 
-    public function all()
+    public function all(): BackupCollection
     {
-        // noop
+        return new BackupCollection();
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'null_destination1';
     }
@@ -143,7 +140,7 @@ class NullDestination1 implements Destination
 
 class NullDestination2 extends NullDestination1
 {
-    public function getName()
+    public function getName(): string
     {
         return 'null_destination2';
     }

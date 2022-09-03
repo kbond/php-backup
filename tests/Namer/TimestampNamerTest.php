@@ -33,14 +33,13 @@ class TimestampNamerTest extends TestCase
         $this->assertSame('timestamp', $namer->getName());
     }
 
-    public static function nameProvider()
+    public static function nameProvider(): array
     {
-        return array(
-            array(TimestampNamer::DEFAULT_FORMAT, TimestampNamer::DEFAULT_PREFIX),
-            array(TimestampNamer::DEFAULT_FORMAT, TimestampNamer::DEFAULT_PREFIX, 'UTC'),
-            array('d', null),
-            array('dm', null),
-            array('s', 'foo-'),
-        );
+        return [
+            [TimestampNamer::DEFAULT_FORMAT, TimestampNamer::DEFAULT_PREFIX],
+            [TimestampNamer::DEFAULT_FORMAT, TimestampNamer::DEFAULT_PREFIX, 'UTC'],
+            ['d', ''],
+            ['s', 'foo-'],
+        ];
     }
 }

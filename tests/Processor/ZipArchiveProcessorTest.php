@@ -12,7 +12,7 @@ class ZipArchiveProcessorTest extends ArchiveProcessorTest
     /**
      * {@inheritdoc}
      */
-    protected function getProcessor()
+    protected function getProcessor(): \Zenstruck\Backup\Processor\ArchiveProcessor|ZipArchiveProcessor
     {
         return new ZipArchiveProcessor('archive');
     }
@@ -20,7 +20,7 @@ class ZipArchiveProcessorTest extends ArchiveProcessorTest
     /**
      * {@inheritdoc}
      */
-    protected function getExtension()
+    protected function getExtension(): string
     {
         return 'zip';
     }

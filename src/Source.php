@@ -10,13 +10,9 @@ use Psr\Log\LoggerInterface;
 interface Source
 {
     /**
-     * @param string          $scratchDir Path to the scratch directory
-     * @param LoggerInterface $logger
+     * @param string $scratchDir Path to the scratch directory
      */
-    public function fetch($scratchDir, LoggerInterface $logger);
+    public function fetch(string $scratchDir, LoggerInterface $logger);
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 }

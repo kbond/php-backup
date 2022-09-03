@@ -34,7 +34,7 @@ class RunCommandTest extends ProfileActionCommandTest
     /**
      * {@inheritdoc}
      */
-    protected function getCommandName()
+    protected function getCommandName(): string
     {
         return 'zenstruck:backup:run';
     }
@@ -42,7 +42,7 @@ class RunCommandTest extends ProfileActionCommandTest
     /**
      * {@inheritdoc}
      */
-    protected function createCommand()
+    protected function createCommand(): RunCommand|\Zenstruck\Backup\Console\Command\ProfileActionCommand
     {
         return new RunCommand();
     }

@@ -34,15 +34,15 @@ class ListCommandTest extends ProfileActionCommandTest
             array('command' => $this->getCommandName(), 'profile' => 'foo')
         );
 
-        $this->assertContains('foo.txt | 4', $commandTester->getDisplay());
-        $this->assertContains('bam.txt | 4', $commandTester->getDisplay());
-        $this->assertNotContains('baz.txt | 4', $commandTester->getDisplay());
+        $this->assertStringContainsString('foo.txt | 4', $commandTester->getDisplay());
+        $this->assertStringContainsString('bam.txt | 4', $commandTester->getDisplay());
+        $this->assertStringNotContainsString('baz.txt | 4', $commandTester->getDisplay());
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createCommand()
+    protected function createCommand(): ListCommand|\Zenstruck\Backup\Console\Command\ProfileActionCommand
     {
         return new ListCommand();
     }
@@ -50,7 +50,7 @@ class ListCommandTest extends ProfileActionCommandTest
     /**
      * {@inheritdoc}
      */
-    protected function getCommandName()
+    protected function getCommandName(): string
     {
         return 'zenstruck:backup:list';
     }

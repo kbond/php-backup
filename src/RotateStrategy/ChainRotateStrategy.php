@@ -12,7 +12,7 @@ use Zenstruck\Backup\RotateStrategy;
 class ChainRotateStrategy implements RotateStrategy
 {
     /** @var RotateStrategy[] */
-    private $rotateStrategies;
+    private array $rotateStrategies;
 
     /**
      * @param RotateStrategy[] $rotateStrategies
@@ -25,7 +25,7 @@ class ChainRotateStrategy implements RotateStrategy
     /**
      * {@inheritdoc}
      */
-    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup)
+    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup): BackupCollection
     {
         foreach ($this->rotateStrategies as $rotateStrategy) {
             $backupsToRemove = $rotateStrategy->getBackupsToRemove($existingBackups, $newBackup);

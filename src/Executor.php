@@ -10,25 +10,14 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class Executor
 {
-    private $logger;
-
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**
-     * @param Profile $profile
-     * @param bool    $clear
-     *
-     * @return BackupCollection
-     *
      * @throws \Exception
      */
-    public function backup(Profile $profile, $clear = false)
+    public function backup(Profile $profile, bool $clear = false): BackupCollection
     {
         $scratchDir = $profile->getScratchDir();
         $processor = $profile->getProcessor();
@@ -66,12 +55,9 @@ final class Executor
     }
 
     /**
-     * @param Profile $profile
-     * @param string  $filename
-     *
      * @return Backup[]
      */
-    private function sendToDestinations(Profile $profile, $filename)
+    private function sendToDestinations(Profile $profile, string $filename): array
     {
         $backups = array();
 

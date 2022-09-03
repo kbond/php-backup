@@ -11,20 +11,17 @@ use Zenstruck\Backup\RotateStrategy;
  */
 class MaxSizeRotateStrategy implements RotateStrategy
 {
-    private $maxSize;
-
     /**
      * @param int $maxSize in bytes
      */
-    public function __construct($maxSize)
+    public function __construct(private int $maxSize)
     {
-        $this->maxSize = $maxSize;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup)
+    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup): BackupCollection
     {
         $size = $existingBackups->getTotalFileSize() + $newBackup->getSize();
 

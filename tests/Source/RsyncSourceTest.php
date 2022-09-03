@@ -19,8 +19,8 @@ class RsyncSourceTest extends TestCase
         $scratch = $this->getScratchDir();
 
         $source = new RsyncSource('rysnc', $this->getFixtureDir());
-        $this->assertFileNotExists($scratch.'/Fixtures/foo.txt');
-        $this->assertFileNotExists($scratch.'/Fixtures/bar/baz.txt');
+        $this->assertFileDoesNotExist($scratch.'/Fixtures/foo.txt');
+        $this->assertFileDoesNotExist($scratch.'/Fixtures/bar/baz.txt');
 
         $source->fetch($scratch, new NullLogger());
         $this->assertFileExists($scratch.'/Fixtures/foo.txt');
@@ -29,12 +29,12 @@ class RsyncSourceTest extends TestCase
 
     /**
      * @test
-     *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage rsync: change_dir "/foo" failed: No such file or directory (2)
      */
     public function it_fails_for_invalid_directory()
     {
+        #$this->expectExceptionMessage("rsync: change_dir \"/foo\" failed: No such file or directory (2)");
+        $this->expectExceptionMessage("rsync: [sender] change_dir \"/foo\" failed: No such file or directory (2)");
+        $this->expectException(\RuntimeException::class);
         $scratch = $this->getScratchDir();
 
         $source = new RsyncSource('rsync', '/foo/bar');

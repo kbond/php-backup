@@ -11,20 +11,14 @@ use Zenstruck\Backup\RotateStrategy;
  */
 class MaxCountRotateStrategy implements RotateStrategy
 {
-    private $maxCount;
-
-    /**
-     * @param int $maxCount
-     */
-    public function __construct($maxCount)
+    public function __construct(private int $maxCount)
     {
-        $this->maxCount = $maxCount;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup)
+    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup): BackupCollection
     {
         $count = count($existingBackups) + 1;
 

@@ -41,7 +41,7 @@ class S3CmdDestinationTest extends DestinationTest
         $this->markTestIncomplete('Test not available for S3CmdDestination');
     }
 
-    public function createDestination($directory, $name = 'foo')
+    public function createDestination(string $directory, string $name = 'foo'): S3CmdDestination
     {
         return new S3CmdDestination($name, 'n/a');
     }

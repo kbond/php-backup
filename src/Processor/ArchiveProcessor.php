@@ -14,32 +14,14 @@ abstract class ArchiveProcessor implements Processor
 {
     const DEFAULT_TIMEOUT = 300;
 
-    private $name;
-    private $command;
-    private $options;
-    private $extension;
-    private $timeout;
-
-    /**
-     * @param string $name
-     * @param string $command
-     * @param string $options
-     * @param string $extension
-     * @param int    $timeout
-     */
-    public function __construct($name, $command, $options, $extension, $timeout = self::DEFAULT_TIMEOUT)
+    public function __construct(private string $name, private string $command, private string $options, private string $extension, private int $timeout = self::DEFAULT_TIMEOUT)
     {
-        $this->name = $name;
-        $this->command = $command;
-        $this->options = $options;
-        $this->extension = $extension;
-        $this->timeout = $timeout;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process($scratchDir, Namer $namer, LoggerInterface $logger)
+    public function process(string $scratchDir, Namer $namer, LoggerInterface $logger): string
     {
         $filename = sprintf('%s/%s.%s', sys_get_temp_dir(), $namer->generate(), $this->extension);
 
@@ -59,7 +41,7 @@ abstract class ArchiveProcessor implements Processor
     /**
      * {@inheritdoc}
      */
-    public function cleanup($filename, LoggerInterface $logger)
+    public function cleanup(string $filename, LoggerInterface $logger)
     {
         $logger->info(sprintf('Deleting %s', $filename));
 
@@ -68,10 +50,7 @@ abstract class ArchiveProcessor implements Processor
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -2,38 +2,32 @@
 
 namespace Zenstruck\Backup;
 
+use Traversable;
+
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class ProfileRegistry implements \Countable, \IteratorAggregate
 {
     /** @var Profile[] */
-    private $profiles = array();
+    private array $profiles = [];
 
     /**
      * @param Profile[] $profiles
      */
-    public function __construct(array $profiles = array())
+    public function __construct(array $profiles = [])
     {
         foreach ($profiles as $profile) {
             $this->add($profile);
         }
     }
 
-    /**
-     * @param Profile $profile
-     */
     public function add(Profile $profile)
     {
         $this->profiles[$profile->getName()] = $profile;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Profile
-     */
-    public function get($name)
+    public function get(string $name): Profile
     {
         if (!isset($this->profiles[$name])) {
             throw new \InvalidArgumentException(sprintf('Profile "%s" is not registered.', $name));
@@ -45,7 +39,7 @@ final class ProfileRegistry implements \Countable, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->profiles);
     }
@@ -53,7 +47,7 @@ final class ProfileRegistry implements \Countable, \IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->profiles);
     }

@@ -13,33 +13,29 @@ class RsyncSource implements Source
 {
     const DEFAULT_TIMEOUT = 300;
 
-    private $name;
-    private $source;
-    private $options;
-    private $timeout;
+    private array $options;
 
     /**
-     * @param string $name
      * @param string $source            The rsync source
      * @param array  $additionalOptions Additional rsync options (useful for excludes)
      * @param array  $defaultOptions    Default rsync options
-     * @param int    $timeout
      */
-    public function __construct($name, $source, array $additionalOptions = array(), array $defaultOptions = array(), $timeout = self::DEFAULT_TIMEOUT)
+    public function __construct(private string $name,
+                                private string $source,
+                                array          $additionalOptions = [],
+                                array          $defaultOptions = [],
+                                private int    $timeout = self::DEFAULT_TIMEOUT)
     {
         $defaultOptions = count($defaultOptions) ? $defaultOptions : static::getDefaultOptions();
 
-        $this->name = $name;
-        $this->source = $source;
         $this->options = $defaultOptions;
-        $this->timeout = $timeout;
 
         foreach ($additionalOptions as $option) {
             $this->options[] = $option;
         }
     }
 
-    public static function getDefaultOptions()
+    public static function getDefaultOptions(): array
     {
         return array('-acrv', '--force', '--delete', '--progress', '--delete-excluded');
     }
@@ -47,7 +43,7 @@ class RsyncSource implements Source
     /**
      * {@inheritdoc}
      */
-    public function fetch($scratchDir, LoggerInterface $logger)
+    public function fetch(string $scratchDir, LoggerInterface $logger)
     {
         $logger->info(sprintf('Syncing files from: %s', $this->source));
 
@@ -61,10 +57,7 @@ class RsyncSource implements Source
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

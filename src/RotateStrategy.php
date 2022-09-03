@@ -8,10 +8,7 @@ namespace Zenstruck\Backup;
 interface RotateStrategy
 {
     /**
-     * @param BackupCollection $existingBackups
-     * @param Backup           $newBackup
-     *
      * @return BackupCollection The backups to be removed
      */
-    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup);
+    public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup): BackupCollection;
 }

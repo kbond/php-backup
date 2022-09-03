@@ -7,10 +7,10 @@ namespace Zenstruck\Backup;
  */
 final class ProfileBuilder
 {
-    private $processors;
-    private $namers;
-    private $sources;
-    private $destinations;
+    private array $processors;
+    private array $namers;
+    private array $sources;
+    private array $destinations;
 
     /**
      * @param Processor[]   $processors
@@ -18,7 +18,10 @@ final class ProfileBuilder
      * @param Source[]      $sources
      * @param Destination[] $destinations
      */
-    public function __construct(array $processors = array(), array $namers = array(), array $sources = array(), array $destinations = array())
+    public function __construct(array $processors = [],
+                                array $namers = [],
+                                array $sources = [],
+                                array $destinations = [])
     {
         foreach ($processors as $processor) {
             $this->addProcessor($processor);
@@ -38,16 +41,10 @@ final class ProfileBuilder
     }
 
     /**
-     * @param string $name
-     * @param string $scratchDir
-     * @param string $processor
-     * @param string $namer
-     * @param array  $sources
-     * @param array  $destinations
-     *
-     * @return Profile
+     * @param Source[] $sources
+     * @param Destination[] $destinations
      */
-    public function create($name, $scratchDir, $processor, $namer, array $sources, array $destinations)
+    public function create(string $name, string $scratchDir, string $processor, string $namer, array $sources, array $destinations): Profile
     {
         return new Profile(
             $name,
@@ -59,20 +56,12 @@ final class ProfileBuilder
         );
     }
 
-    /**
-     * @param Source $source
-     */
-    public function addSource(Source $source)
+    public function addSource(Source $source): void
     {
         $this->sources[$source->getName()] = $source;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Source
-     */
-    public function getSource($name)
+    public function getSource(string $name): Source
     {
         if (!isset($this->sources[$name])) {
             throw new \InvalidArgumentException(sprintf('Source "%s" is not registered.', $name));
@@ -86,7 +75,7 @@ final class ProfileBuilder
      *
      * @return Source[]
      */
-    public function getSources(array $names)
+    public function getSources(array $names): array
     {
         $self = $this;
 
@@ -95,20 +84,12 @@ final class ProfileBuilder
         }, $names);
     }
 
-    /**
-     * @param Namer $namer
-     */
-    public function addNamer(Namer $namer)
+    public function addNamer(Namer $namer): void
     {
         $this->namers[$namer->getName()] = $namer;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Namer
-     */
-    public function getNamer($name)
+    public function getNamer(string $name): Namer
     {
         if (!isset($this->namers[$name])) {
             throw new \InvalidArgumentException(sprintf('Namer "%s" is not registered.', $name));
@@ -117,20 +98,12 @@ final class ProfileBuilder
         return $this->namers[$name];
     }
 
-    /**
-     * @param Processor $processor
-     */
-    public function addProcessor(Processor $processor)
+    public function addProcessor(Processor $processor): void
     {
         $this->processors[$processor->getName()] = $processor;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Processor
-     */
-    public function getProcessor($name)
+    public function getProcessor(string $name): Processor
     {
         if (!isset($this->processors[$name])) {
             throw new \InvalidArgumentException(sprintf('Processor "%s" is not registered.', $name));
@@ -139,20 +112,12 @@ final class ProfileBuilder
         return $this->processors[$name];
     }
 
-    /**
-     * @param Destination $destination
-     */
-    public function addDestination(Destination $destination)
+    public function addDestination(Destination $destination): void
     {
         $this->destinations[$destination->getName()] = $destination;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Destination
-     */
-    public function getDestination($name)
+    public function getDestination(string $name): Destination
     {
         if (!isset($this->destinations[$name])) {
             throw new \InvalidArgumentException(sprintf('Destination "%s" is not registered.', $name));
@@ -166,7 +131,7 @@ final class ProfileBuilder
      *
      * @return Destination[]
      */
-    public function getDestinations(array $names)
+    public function getDestinations(array $names): array
     {
         $self = $this;
 
