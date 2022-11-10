@@ -14,9 +14,6 @@ use Zenstruck\Backup\Profile;
  */
 class RunCommand extends ProfileActionCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -28,7 +25,6 @@ class RunCommand extends ProfileActionCommand
     }
 
     /**
-     * {@inheritdoc}
      * @throws \Exception
      */
     protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output): int

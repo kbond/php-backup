@@ -44,15 +44,11 @@ class RotatedDestination implements Destination
         return $this->destination->getName();
     }
 
-    /**
-     * @param Backup          $newBackup
-     * @param LoggerInterface $logger
-     */
     private function doRotate(Backup $newBackup, LoggerInterface $logger)
     {
         $backups = $this->all();
 
-        if (0 === count($backups)) {
+        if (0 === \count($backups)) {
             return;
         }
 
@@ -60,7 +56,7 @@ class RotatedDestination implements Destination
         $backupsToRemove = $this->rotateStrategy->getBackupsToRemove($backups, $newBackup);
 
         foreach ($backupsToRemove as $backup) {
-            $logger->info(sprintf('Removing backup "%s" from destination "%s"', $backup->getKey(), $this->getName()));
+            $logger->info(\sprintf('Removing backup "%s" from destination "%s"', $backup->getKey(), $this->getName()));
             $this->delete($backup->getKey());
         }
     }

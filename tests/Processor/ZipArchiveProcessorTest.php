@@ -9,17 +9,11 @@ use Zenstruck\Backup\Processor\ZipArchiveProcessor;
  */
 class ZipArchiveProcessorTest extends ArchiveProcessorTest
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getProcessor(): \Zenstruck\Backup\Processor\ArchiveProcessor|ZipArchiveProcessor
     {
         return new ZipArchiveProcessor('archive');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getExtension(): string
     {
         return 'zip';

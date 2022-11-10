@@ -12,20 +12,17 @@ use Zenstruck\Backup\Processor;
  */
 abstract class ArchiveProcessor implements Processor
 {
-    const DEFAULT_TIMEOUT = 300;
+    public const DEFAULT_TIMEOUT = 300;
 
     public function __construct(private string $name, private string $command, private string $options, private string $extension, private int $timeout = self::DEFAULT_TIMEOUT)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(string $scratchDir, Namer $namer, LoggerInterface $logger): string
     {
-        $filename = sprintf('%s/%s.%s', sys_get_temp_dir(), $namer->generate(), $this->extension);
+        $filename = \sprintf('%s/%s.%s', \sys_get_temp_dir(), $namer->generate(), $this->extension);
 
-        $logger->info(sprintf('Archiving files to: %s', $filename));
+        $logger->info(\sprintf('Archiving files to: %s', $filename));
 
         $process = new Process([$this->command, $this->options, $filename, './'], $scratchDir, null, null, $this->timeout);
 
@@ -38,15 +35,12 @@ abstract class ArchiveProcessor implements Processor
         return $filename;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cleanup(string $filename, LoggerInterface $logger)
     {
-        $logger->info(sprintf('Deleting %s', $filename));
+        $logger->info(\sprintf('Deleting %s', $filename));
 
-        if (file_exists($filename)) {
-            unlink($filename);
+        if (\file_exists($filename)) {
+            \unlink($filename);
         }
     }
 

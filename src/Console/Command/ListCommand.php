@@ -14,9 +14,6 @@ use Zenstruck\Backup\Profile;
  */
 class ListCommand extends ProfileActionCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -26,9 +23,6 @@ class ListCommand extends ProfileActionCommand
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output): int
     {
         foreach ($profile->getDestinations() as $destination) {
@@ -40,22 +34,22 @@ class ListCommand extends ProfileActionCommand
 
     private function listBackups(Destination $destination, OutputInterface $output)
     {
-        $output->writeln(sprintf('Existing backups for <info>%s</info>:', $destination->getName()));
+        $output->writeln(\sprintf('Existing backups for <info>%s</info>:', $destination->getName()));
         $output->writeln('');
 
         $table = new Table($output);
-        $table->setHeaders(array('Key', 'Size', 'Created At'));
+        $table->setHeaders(['Key', 'Size', 'Created At']);
 
         $backups = $destination->all();
 
         if (empty($backups)) {
-            $output->writeln(sprintf("<error>No backups for %s</error>\n", $destination->getName()));
+            $output->writeln(\sprintf("<error>No backups for %s</error>\n", $destination->getName()));
 
             return;
         }
 
         foreach ($destination->all() as $backup) {
-            $table->addRow(array($backup->getKey(), $backup->getFormattedSize(), $backup->getCreatedAt()->format('Y-m-d H:i:s')));
+            $table->addRow([$backup->getKey(), $backup->getFormattedSize(), $backup->getCreatedAt()->format('Y-m-d H:i:s')]);
         }
 
         $table->render();

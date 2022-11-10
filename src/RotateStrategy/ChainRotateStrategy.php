@@ -22,15 +22,12 @@ class ChainRotateStrategy implements RotateStrategy
         $this->rotateStrategies = $rotateStrategies;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup): BackupCollection
     {
         foreach ($this->rotateStrategies as $rotateStrategy) {
             $backupsToRemove = $rotateStrategy->getBackupsToRemove($existingBackups, $newBackup);
 
-            if (0 !== count($backupsToRemove)) {
+            if (0 !== \count($backupsToRemove)) {
                 return $backupsToRemove;
             }
         }

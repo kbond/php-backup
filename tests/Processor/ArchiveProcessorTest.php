@@ -12,6 +12,20 @@ use Zenstruck\Backup\Tests\TestCase;
  */
 abstract class ArchiveProcessorTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->deleteTempFile();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->deleteTempFile();
+    }
+
     /**
      * @test
      */
@@ -37,41 +51,21 @@ abstract class ArchiveProcessorTest extends TestCase
         $this->assertSame('archive', $this->getProcessor()->getName());
     }
 
-    /**
-     * @return ArchiveProcessor
-     */
     abstract protected function getProcessor(): ArchiveProcessor;
 
-    /**
-     * @return string
-     */
     abstract protected function getExtension(): string;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->deleteTempFile();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->deleteTempFile();
-    }
 
     private function deleteTempFile()
     {
         $filename = $this->getTempFilename();
 
-        if (file_exists($filename)) {
-            unlink($filename);
+        if (\file_exists($filename)) {
+            \unlink($filename);
         }
     }
 
     private function getTempFilename(): string
     {
-        return sys_get_temp_dir().'/zenstruck-backup-foo.'.$this->getExtension();
+        return \sys_get_temp_dir().'/zenstruck-backup-foo.'.$this->getExtension();
     }
 }

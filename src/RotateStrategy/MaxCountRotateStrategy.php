@@ -15,18 +15,15 @@ class MaxCountRotateStrategy implements RotateStrategy
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup): BackupCollection
     {
-        $count = count($existingBackups) + 1;
+        $count = \count($existingBackups) + 1;
 
         if ($count <= $this->maxCount) {
             return new BackupCollection();
         }
 
-        $backupsToRemove = array();
+        $backupsToRemove = [];
 
         for ($i = 0; $i < ($count - $this->maxCount); ++$i) {
             $backupsToRemove[] = $existingBackups->get($i);

@@ -77,12 +77,6 @@ abstract class DestinationTest extends TestCase
         $this->assertSame('foo', $destination->getName());
     }
 
-    /**
-     * @param string $directory
-     * @param string $name
-     *
-     * @return Destination
-     */
     abstract protected function createDestination(string $directory, string $name = 'foo'): Destination;
 
     private function prepareScratch()

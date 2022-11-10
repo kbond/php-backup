@@ -28,7 +28,7 @@ final class Executor
             $filesystem->remove($scratchDir);
         }
 
-        if (!is_dir($scratchDir)) {
+        if (!\is_dir($scratchDir)) {
             $filesystem->mkdir($scratchDir);
         }
 
@@ -59,17 +59,17 @@ final class Executor
      */
     private function sendToDestinations(Profile $profile, string $filename): array
     {
-        $backups = array();
+        $backups = [];
 
         foreach ($profile->getDestinations() as $destination) {
             $backup = $destination->push($filename, $this->logger);
 
             $this->logger->info(
-                sprintf('Backup created for destination "%s" at: "%s" ', $destination->getName(), $backup->getKey()),
-                array(
+                \sprintf('Backup created for destination "%s" at: "%s" ', $destination->getName(), $backup->getKey()),
+                [
                     'size' => $backup->getFormattedSize(),
                     'created_at' => $backup->getCreatedAt()->format('Y-m-d H:i:s'),
-                )
+                ]
             );
 
             $backups[] = $backup;

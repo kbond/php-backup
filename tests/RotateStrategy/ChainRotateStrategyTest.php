@@ -18,10 +18,10 @@ class ChainRotateStrategyTest extends TestCase
      */
     public function returns_nothing_if_requirements_not_met()
     {
-        $strategy = new ChainRotateStrategy(array(
+        $strategy = new ChainRotateStrategy([
             new MaxSizeRotateStrategy(100),
             new MaxCountRotateStrategy(10),
-        ));
+        ]);
         $toRemove = $strategy->getBackupsToRemove($this->collection, new Backup('foo', 6, new \DateTime()));
 
         $this->assertCount(0, $toRemove);
@@ -32,10 +32,10 @@ class ChainRotateStrategyTest extends TestCase
      */
     public function returns_backups_to_remove()
     {
-        $strategy = new ChainRotateStrategy(array(
+        $strategy = new ChainRotateStrategy([
             new MaxSizeRotateStrategy(100),
             new MaxCountRotateStrategy(2),
-        ));
+        ]);
         $toRemove = $strategy->getBackupsToRemove($this->collection, new Backup('foo', 6, new \DateTime()));
 
         $this->assertCount(2, $toRemove);

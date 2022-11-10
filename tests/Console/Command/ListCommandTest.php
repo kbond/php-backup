@@ -25,13 +25,13 @@ class ListCommandTest extends ProfileActionCommandTest
             $this->getScratchDir(),
             new NullProcessor(),
             new SimpleNamer(),
-            array(new NullSource1(), new NullSource2()),
-            array(new StreamDestination('bar', $this->getFixtureDir()))
+            [new NullSource1(), new NullSource2()],
+            [new StreamDestination('bar', $this->getFixtureDir())]
         );
 
-        $commandTester = $this->createCommandTester(array($profile));
+        $commandTester = $this->createCommandTester([$profile]);
         $commandTester->execute(
-            array('command' => $this->getCommandName(), 'profile' => 'foo')
+            ['command' => $this->getCommandName(), 'profile' => 'foo']
         );
 
         $this->assertStringContainsString('foo.txt | 4', $commandTester->getDisplay());
@@ -39,17 +39,11 @@ class ListCommandTest extends ProfileActionCommandTest
         $this->assertStringNotContainsString('baz.txt | 4', $commandTester->getDisplay());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createCommand(): ListCommand|\Zenstruck\Backup\Console\Command\ProfileActionCommand
     {
         return new ListCommand();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getCommandName(): string
     {
         return 'zenstruck:backup:list';

@@ -1,14 +1,7 @@
 # zenstruck/backup
 
-[![Build Status](http://img.shields.io/travis/kbond/php-backup.svg?style=flat-square)](https://travis-ci.org/kbond/php-backup)
-[![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/kbond/php-backup.svg?style=flat-square)](https://scrutinizer-ci.com/g/kbond/php-backup/)
-[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/kbond/php-backup.svg?style=flat-square)](https://scrutinizer-ci.com/g/kbond/php-backup/)
-[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/c4035c63-56a5-4498-99be-d143938384af.svg?style=flat-square)](https://insight.sensiolabs.com/projects/c4035c63-56a5-4498-99be-d143938384af)
-[![StyleCI](https://styleci.io/repos/45110395/shield)](https://styleci.io/repos/45110395)
-[![Latest Stable Version](http://img.shields.io/packagist/v/zenstruck/backup.svg?style=flat-square)](https://packagist.org/packages/zenstruck/backup)
-[![License](http://img.shields.io/packagist/l/zenstruck/backup.svg?style=flat-square)](https://packagist.org/packages/zenstruck/backup)
-
-Create and archive backups. [A Symfony Bundle](https://github.com/kbond/ZenstruckBackupBundle) and a [Laravel package](https://github.com/vinkla/backup) is available that wraps this library.
+Create and archive backups. [A Symfony Bundle](https://github.com/kbond/ZenstruckBackupBundle) and
+a [Laravel package](https://github.com/vinkla/backup) is available that wraps this library.
 
 An "executor" takes a backup profile and processes it. A backup "profile" consists of 4 parts:
 

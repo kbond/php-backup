@@ -9,8 +9,8 @@ use Zenstruck\Backup\Namer;
  */
 class TimestampNamer implements Namer
 {
-    const DEFAULT_FORMAT = 'YmdHis';
-    const DEFAULT_PREFIX = '';
+    public const DEFAULT_FORMAT = 'YmdHis';
+    public const DEFAULT_PREFIX = '';
 
     private ?\DateTimeZone $timezone;
 

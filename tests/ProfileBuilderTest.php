@@ -16,10 +16,10 @@ class ProfileBuilderTest extends TestCase
     public function it_can_create_a_profile()
     {
         $builder = new ProfileBuilder(
-            array(new NullProcessor()),
-            array(new SimpleNamer()),
-            array(new NullSource1(), new NullSource2()),
-            array(new NullDestination1(), new NullDestination2())
+            [new NullProcessor()],
+            [new SimpleNamer()],
+            [new NullSource1(), new NullSource2()],
+            [new NullDestination1(), new NullDestination2()]
         );
 
         $profile = $builder->create(
@@ -27,8 +27,8 @@ class ProfileBuilderTest extends TestCase
             $this->getScratchDir(),
             'null_processor',
             'backup',
-            array('null_source1'),
-            array('null_destination1')
+            ['null_source1'],
+            ['null_destination1']
         );
 
         $this->assertSame('my_profile', $profile->getName());
@@ -49,7 +49,6 @@ class ProfileBuilderTest extends TestCase
 
     /**
      * @test
-     *
      * @dataProvider invalidItemProvider
      */
     public function it_throws_exceptions_when_asking_for_invalid_items($method, $message)
@@ -58,16 +57,16 @@ class ProfileBuilderTest extends TestCase
         $this->expectExceptionMessage($message);
 
         $builder = new ProfileBuilder();
-        $builder->$method('foo');
+        $builder->{$method}('foo');
     }
 
     public static function invalidItemProvider(): array
     {
-        return array(
-            array('getProcessor', 'Processor "foo" is not registered.'),
-            array('getNamer', 'Namer "foo" is not registered.'),
-            array('getSource', 'Source "foo" is not registered.'),
-            array('getDestination', 'Destination "foo" is not registered.'),
-        );
+        return [
+            ['getProcessor', 'Processor "foo" is not registered.'],
+            ['getNamer', 'Namer "foo" is not registered.'],
+            ['getSource', 'Source "foo" is not registered.'],
+            ['getDestination', 'Destination "foo" is not registered.'],
+        ];
     }
 }

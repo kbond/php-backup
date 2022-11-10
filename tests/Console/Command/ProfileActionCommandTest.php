@@ -21,9 +21,9 @@ abstract class ProfileActionCommandTest extends TestCase
      */
     public function it_can_list_profiles()
     {
-        $commandTester = $this->createCommandTester(array($this->createNullProfile('foo')));
+        $commandTester = $this->createCommandTester([$this->createNullProfile('foo')]);
         $commandTester->execute(
-            array('command' => $this->getCommandName())
+            ['command' => $this->getCommandName()]
         );
 
         $this->assertStringContainsString(
@@ -34,48 +34,40 @@ abstract class ProfileActionCommandTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function it_fails_when_asking_for_undefined_profile()
     {
-        $this->expectExceptionMessage("Profile \"foo\" is not registered.");
+        $this->expectExceptionMessage('Profile "foo" is not registered.');
         $this->expectException(\InvalidArgumentException::class);
         $commandTester = $this->createCommandTester();
         $commandTester->execute(
-            array('command' => $this->getCommandName(), 'profile' => 'foo')
+            ['command' => $this->getCommandName(), 'profile' => 'foo']
         );
     }
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function it_fails_when_listing_no_profiles()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage("No profiles configured.");
+        $this->expectExceptionMessage('No profiles configured.');
         $commandTester = $this->createCommandTester();
         $commandTester->execute(
-            array('command' => 'zenstruck:backup:run')
+            ['command' => 'zenstruck:backup:run']
         );
     }
 
     /**
      * @param Profile[] $profiles
-     * @param int|null $infoCalls
-     *
-     * @return CommandTester
      */
-    protected function createCommandTester(array $profiles = array(), ?int $infoCalls = 0): CommandTester
+    protected function createCommandTester(array $profiles = [], ?int $infoCalls = 0): CommandTester
     {
         $logger = $this->createMock('Psr\Log\LoggerInterface');
         $logger
             ->expects($this->exactly($infoCalls))
-            ->method('info');
+            ->method('info')
+        ;
 
         $application = new Application();
         $application->add($this->createCommand());
@@ -86,13 +78,7 @@ abstract class ProfileActionCommandTest extends TestCase
         return new CommandTester($command);
     }
 
-    /**
-     * @return ProfileActionCommand
-     */
     abstract protected function createCommand(): ProfileActionCommand;
 
-    /**
-     * @return string
-     */
     abstract protected function getCommandName(): string;
 }

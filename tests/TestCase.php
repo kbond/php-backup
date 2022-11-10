@@ -29,11 +29,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->filesystem->mkdir($this->getScratchDir());
 
-        $this->collection = new BackupCollection(array(
+        $this->collection = new BackupCollection([
             new Backup('today', 5, new \DateTime('today')),
             new Backup('tomorrow', 9, new \DateTime('tomorrow')),
             new Backup('yesterday', 22, new \DateTime('yesterday')),
-        ));
+        ]);
     }
 
     protected function tearDown(): void
@@ -48,7 +48,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     protected function getScratchDir(): string
     {
-        return sys_get_temp_dir().'/zenstruck-backup-bundle';
+        return \sys_get_temp_dir().'/zenstruck-backup-bundle';
     }
 
     protected function createNullProfile($name = 'null_profile'): Profile
@@ -58,14 +58,14 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             $this->getScratchDir(),
             new NullProcessor(),
             new SimpleNamer(),
-            array(new NullSource1(), new NullSource2()),
-            array(new NullDestination1(), new NullDestination2())
+            [new NullSource1(), new NullSource2()],
+            [new NullDestination1(), new NullDestination2()]
         );
     }
 
     private function removeScratchDir()
     {
-        if (is_dir($dir = $this->getScratchDir())) {
+        if (\is_dir($dir = $this->getScratchDir())) {
             $this->filesystem->remove($dir);
         }
     }
@@ -80,7 +80,7 @@ class NullProcessor implements Processor
 
     public function process(string $scratchDir, Namer $namer, LoggerInterface $logger): string
     {
-        return "";
+        return '';
     }
 
     public function cleanup(string $filename, LoggerInterface $logger)

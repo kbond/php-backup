@@ -11,7 +11,7 @@ use Zenstruck\Backup\Source;
  */
 class RsyncSource implements Source
 {
-    const DEFAULT_TIMEOUT = 300;
+    public const DEFAULT_TIMEOUT = 300;
 
     private array $options;
 
@@ -20,13 +20,14 @@ class RsyncSource implements Source
      * @param array  $additionalOptions Additional rsync options (useful for excludes)
      * @param array  $defaultOptions    Default rsync options
      */
-    public function __construct(private string $name,
-                                private string $source,
-                                array          $additionalOptions = [],
-                                array          $defaultOptions = [],
-                                private int    $timeout = self::DEFAULT_TIMEOUT)
-    {
-        $defaultOptions = count($defaultOptions) ? $defaultOptions : static::getDefaultOptions();
+    public function __construct(
+        private string $name,
+        private string $source,
+        array $additionalOptions = [],
+        array $defaultOptions = [],
+        private int $timeout = self::DEFAULT_TIMEOUT
+    ) {
+        $defaultOptions = \count($defaultOptions) ? $defaultOptions : static::getDefaultOptions();
 
         $this->options = $defaultOptions;
 
@@ -37,17 +38,14 @@ class RsyncSource implements Source
 
     public static function getDefaultOptions(): array
     {
-        return array('-acrv', '--force', '--delete', '--progress', '--delete-excluded');
+        return ['-acrv', '--force', '--delete', '--progress', '--delete-excluded'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fetch(string $scratchDir, LoggerInterface $logger)
     {
-        $logger->info(sprintf('Syncing files from: %s', $this->source));
+        $logger->info(\sprintf('Syncing files from: %s', $this->source));
 
-        $args = array_merge(['rsync'], $this->options, [$this->source, $scratchDir]);
+        $args = \array_merge(['rsync'], $this->options, [$this->source, $scratchDir]);
         $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();

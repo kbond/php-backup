@@ -32,8 +32,6 @@ class RsyncSourceTest extends TestCase
      */
     public function it_fails_for_invalid_directory()
     {
-        #$this->expectExceptionMessage("rsync: change_dir \"/foo\" failed: No such file or directory (2)");
-        $this->expectExceptionMessage("rsync: [sender] change_dir \"/foo\" failed: No such file or directory (2)");
         $this->expectException(\RuntimeException::class);
         $scratch = $this->getScratchDir();
 

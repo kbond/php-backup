@@ -9,17 +9,11 @@ use Zenstruck\Backup\Processor\GzipArchiveProcessor;
  */
 class GzipArchiveProcessorTest extends ArchiveProcessorTest
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getProcessor(): GzipArchiveProcessor|\Zenstruck\Backup\Processor\ArchiveProcessor
     {
         return new GzipArchiveProcessor('archive');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getExtension(): string
     {
         return 'tar.gz';

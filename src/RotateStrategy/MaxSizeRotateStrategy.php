@@ -18,9 +18,6 @@ class MaxSizeRotateStrategy implements RotateStrategy
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBackupsToRemove(BackupCollection $existingBackups, Backup $newBackup): BackupCollection
     {
         $size = $existingBackups->getTotalFileSize() + $newBackup->getSize();
@@ -29,7 +26,7 @@ class MaxSizeRotateStrategy implements RotateStrategy
             return new BackupCollection();
         }
 
-        $backupsToRemove = array();
+        $backupsToRemove = [];
 
         /** @var Backup[] $existingBackups */
         foreach ($existingBackups as $backup) {

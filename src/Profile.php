@@ -14,14 +14,14 @@ final class Profile
      * @param Source[]      $sources
      * @param Destination[] $destinations
      */
-    public function __construct(private string    $name,
-                                private string    $scratchDir,
-                                private Processor $processor,
-                                private Namer     $namer,
-                                array             $sources,
-                                array             $destinations)
-    {
-
+    public function __construct(
+        private string $name,
+        private string $scratchDir,
+        private Processor $processor,
+        private Namer $namer,
+        array $sources,
+        array $destinations
+    ) {
         foreach ($sources as $source) {
             $this->addSource($source);
         }

@@ -17,10 +17,6 @@ class FlysystemDestination implements Destination
     private string $name;
     private FilesystemInterface $filesystem;
 
-    /**
-     * @param string $name
-     * @param FilesystemInterface $filesystem
-     */
     public function __construct(string $name, FilesystemInterface $filesystem)
     {
         $this->name = $name;
@@ -32,10 +28,10 @@ class FlysystemDestination implements Destination
      */
     public function push(string $filename, LoggerInterface $logger): Backup
     {
-        $key = basename($filename);
-        $resource = fopen($filename, 'r');
+        $key = \basename($filename);
+        $resource = \fopen($filename, 'r');
 
-        $logger->info(sprintf('Uploading %s to: %s', $filename, $this->getName()));
+        $logger->info(\sprintf('Uploading %s to: %s', $filename, $this->getName()));
 
         $this->filesystem->putStream($key, $resource);
 
@@ -64,7 +60,7 @@ class FlysystemDestination implements Destination
 
     public function all(): BackupCollection
     {
-        $backups = array();
+        $backups = [];
 
         foreach ($this->filesystem->listContents() as $metadata) {
             if ('file' !== $metadata['type']) {

@@ -7,7 +7,7 @@ namespace Zenstruck\Backup\Processor;
  */
 class GzipArchiveProcessor extends ArchiveProcessor
 {
-    const DEFAULT_OPTIONS = '-czvf';
+    public const DEFAULT_OPTIONS = '-czvf';
 
     public function __construct($name, $options = self::DEFAULT_OPTIONS, $timeout = self::DEFAULT_TIMEOUT)
     {

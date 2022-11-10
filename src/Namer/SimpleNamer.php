@@ -9,13 +9,10 @@ use Zenstruck\Backup\Namer;
  */
 class SimpleNamer implements Namer
 {
-    const DEFAULT_NAME = 'backup';
+    public const DEFAULT_NAME = 'backup';
 
     private string $name;
 
-    /**
-     * @param string $name
-     */
     public function __construct(string $name = self::DEFAULT_NAME)
     {
         $this->name = $name;

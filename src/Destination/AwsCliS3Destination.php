@@ -13,10 +13,10 @@ use Zenstruck\Backup\Destination;
  */
 final class AwsCliS3Destination implements Destination
 {
-    const DEFAULT_TIMEOUT = 300;
+    public const DEFAULT_TIMEOUT = 300;
 
     /**
-     * @param int $timeout The process timeout in seconds
+     * @param int   $timeout The process timeout in seconds
      * @param array $options s3cmd command options
      */
     public function __construct(private string $name, private string $bucket, private int $timeout = self::DEFAULT_TIMEOUT, private array $options = [])
@@ -30,14 +30,14 @@ final class AwsCliS3Destination implements Destination
     {
         $destination = $this->createPath($filename);
 
-        $logger->info(sprintf('Uploading %s to: %s', $filename, $destination));
+        $logger->info(\sprintf('Uploading %s to: %s', $filename, $destination));
 
-        $args = array_merge(['aws', 's3', 'cp'], $this->options, [$filename, $destination]);
+        $args = \array_merge(['aws', 's3', 'cp'], $this->options, [$filename, $destination]);
         $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
 
-        if (!$process->isSuccessful() || str_contains($process->getErrorOutput(), 'ERROR:')) {
+        if (!$process->isSuccessful() || \str_contains($process->getErrorOutput(), 'ERROR:')) {
             throw new \RuntimeException($process->getErrorOutput());
         }
 
@@ -51,7 +51,7 @@ final class AwsCliS3Destination implements Destination
     {
         $destination = $this->createPath($key);
 
-        $args = array_merge(['aws', 's3', 'ls'], $this->options, [$destination]);
+        $args = \array_merge(['aws', 's3', 'ls'], $this->options, [$destination]);
         $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
@@ -71,7 +71,7 @@ final class AwsCliS3Destination implements Destination
 
     public function delete($key)
     {
-        throw new \BadMethodCallException(sprintf('%s::%s not yet implemented.', __CLASS__, __METHOD__));
+        throw new \BadMethodCallException(\sprintf('%s::%s not yet implemented.', __CLASS__, __METHOD__));
     }
 
     /**
@@ -79,7 +79,7 @@ final class AwsCliS3Destination implements Destination
      */
     public function all(): BackupCollection
     {
-        $args = array_merge(['aws', 's3', 'ls'], $this->options, [trim($this->bucket, '/').'/']);
+        $args = \array_merge(['aws', 's3', 'ls'], $this->options, [\trim($this->bucket, '/').'/']);
         $process = new Process($args, null, null, null, $this->timeout);
 
         $process->run();
@@ -98,11 +98,12 @@ final class AwsCliS3Destination implements Destination
 
     private function createPath($key): string
     {
-        return sprintf('%s/%s', $this->bucket, basename($key));
+        return \sprintf('%s/%s', $this->bucket, \basename($key));
     }
 
     /**
      * @return Backup[]
+     *
      * @throws \Exception
      */
     private function parseS3CmdListOutput(string $output): array
@@ -113,7 +114,7 @@ final class AwsCliS3Destination implements Destination
             return $backups;
         }
 
-        foreach (explode("\n", $output) as $row) {
+        foreach (\explode("\n", $output) as $row) {
             if ('' === $row) {
                 continue;
             }
@@ -136,12 +137,12 @@ final class AwsCliS3Destination implements Destination
      */
     private function parseS3CmdListRow(string $row): Backup
     {
-        $columns = explode(' ', preg_replace('/\s+/', ' ', $row));
+        $columns = \explode(' ', \preg_replace('/\s+/', ' ', $row));
 
-        if (4 !== count($columns)) {
-            throw new \RuntimeException(sprintf('Error processing result: %s', $row));
+        if (4 !== \count($columns)) {
+            throw new \RuntimeException(\sprintf('Error processing result: %s', $row));
         }
 
-        return new Backup($this->createPath($columns[3]), $columns[2], new \DateTime(sprintf('%s %s', $columns[0], $columns[1])));
+        return new Backup($this->createPath($columns[3]), $columns[2], new \DateTime(\sprintf('%s %s', $columns[0], $columns[1])));
     }
 }

@@ -12,7 +12,6 @@ class TimestampNamerTest extends TestCase
 {
     /**
      * @test
-     *
      * @dataProvider nameProvider
      */
     public function it_generates_a_name($format, $prefix, $timezone = null)

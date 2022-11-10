@@ -13,19 +13,19 @@ final class Backup
     private int $size;
     private \DateTime $createdAt;
 
-    /**
-     * @param string $path The path to the file.
-     */
-    public static function fromFile(string $path): Backup
-    {
-        return new self($path, filesize($path), \DateTime::createFromFormat('U', filemtime($path)));
-    }
-
     public function __construct(string $key, int $size, \DateTime $createdAt)
     {
         $this->key = $key;
         $this->size = $size;
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @param string $path the path to the file
+     */
+    public static function fromFile(string $path): self
+    {
+        return new self($path, \filesize($path), \DateTime::createFromFormat('U', \filemtime($path)));
     }
 
     public function getKey(): string
@@ -34,7 +34,7 @@ final class Backup
     }
 
     /**
-     * @return int The size in bytes.
+     * @return int the size in bytes
      */
     public function getSize(): int
     {

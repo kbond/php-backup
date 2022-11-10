@@ -18,11 +18,12 @@ final class ProfileBuilder
      * @param Source[]      $sources
      * @param Destination[] $destinations
      */
-    public function __construct(array $processors = [],
-                                array $namers = [],
-                                array $sources = [],
-                                array $destinations = [])
-    {
+    public function __construct(
+        array $processors = [],
+        array $namers = [],
+        array $sources = [],
+        array $destinations = []
+    ) {
         foreach ($processors as $processor) {
             $this->addProcessor($processor);
         }
@@ -41,7 +42,7 @@ final class ProfileBuilder
     }
 
     /**
-     * @param Source[] $sources
+     * @param Source[]      $sources
      * @param Destination[] $destinations
      */
     public function create(string $name, string $scratchDir, string $processor, string $namer, array $sources, array $destinations): Profile
@@ -64,24 +65,20 @@ final class ProfileBuilder
     public function getSource(string $name): Source
     {
         if (!isset($this->sources[$name])) {
-            throw new \InvalidArgumentException(sprintf('Source "%s" is not registered.', $name));
+            throw new \InvalidArgumentException(\sprintf('Source "%s" is not registered.', $name));
         }
 
         return $this->sources[$name];
     }
 
     /**
-     * @param array $names
-     *
      * @return Source[]
      */
     public function getSources(array $names): array
     {
         $self = $this;
 
-        return array_map(function ($name) use ($self) {
-            return $self->getSource($name);
-        }, $names);
+        return \array_map(fn($name) => $self->getSource($name), $names);
     }
 
     public function addNamer(Namer $namer): void
@@ -92,7 +89,7 @@ final class ProfileBuilder
     public function getNamer(string $name): Namer
     {
         if (!isset($this->namers[$name])) {
-            throw new \InvalidArgumentException(sprintf('Namer "%s" is not registered.', $name));
+            throw new \InvalidArgumentException(\sprintf('Namer "%s" is not registered.', $name));
         }
 
         return $this->namers[$name];
@@ -106,7 +103,7 @@ final class ProfileBuilder
     public function getProcessor(string $name): Processor
     {
         if (!isset($this->processors[$name])) {
-            throw new \InvalidArgumentException(sprintf('Processor "%s" is not registered.', $name));
+            throw new \InvalidArgumentException(\sprintf('Processor "%s" is not registered.', $name));
         }
 
         return $this->processors[$name];
@@ -120,23 +117,19 @@ final class ProfileBuilder
     public function getDestination(string $name): Destination
     {
         if (!isset($this->destinations[$name])) {
-            throw new \InvalidArgumentException(sprintf('Destination "%s" is not registered.', $name));
+            throw new \InvalidArgumentException(\sprintf('Destination "%s" is not registered.', $name));
         }
 
         return $this->destinations[$name];
     }
 
     /**
-     * @param array $names
-     *
      * @return Destination[]
      */
     public function getDestinations(array $names): array
     {
         $self = $this;
 
-        return array_map(function ($name) use ($self) {
-            return $self->getDestination($name);
-        }, $names);
+        return \array_map(fn($name) => $self->getDestination($name), $names);
     }
 }

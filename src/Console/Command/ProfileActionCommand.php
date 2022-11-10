@@ -20,9 +20,6 @@ abstract class ProfileActionCommand extends BaseCommand
      */
     abstract protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output): int;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $registry = $this->getBackupHelper()->getProfileRegistry();
@@ -41,7 +38,7 @@ abstract class ProfileActionCommand extends BaseCommand
      */
     protected function listProfiles(OutputInterface $output, ProfileRegistry|array $registry)
     {
-        if (0 === count($registry)) {
+        if (0 === \count($registry)) {
             throw new \RuntimeException('No profiles configured.');
         }
 
@@ -49,16 +46,16 @@ abstract class ProfileActionCommand extends BaseCommand
         $output->writeln('');
 
         $table = new Table($output);
-        $table->setHeaders(array('Name', 'Processor', 'Namer', 'Sources', 'Destinations'));
+        $table->setHeaders(['Name', 'Processor', 'Namer', 'Sources', 'Destinations']);
 
         foreach ($registry as $profile) {
-            $table->addRow(array(
+            $table->addRow([
                 $profile->getName(),
                 $profile->getProcessor()->getName(),
                 $profile->getNamer()->getName(),
-                implode(', ', array_keys($profile->getSources())),
-                implode(', ', array_keys($profile->getDestinations())),
-            ));
+                \implode(', ', \array_keys($profile->getSources())),
+                \implode(', ', \array_keys($profile->getDestinations())),
+            ]);
         }
 
         $table->render();

@@ -2,8 +2,6 @@
 
 namespace Zenstruck\Backup;
 
-use Traversable;
-
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -15,9 +13,9 @@ final class BackupCollection implements \IteratorAggregate, \Countable
     /**
      * @param Backup[] $backups
      */
-    public function __construct(array $backups = array())
+    public function __construct(array $backups = [])
     {
-        usort($backups, function (Backup $a, Backup $b) {
+        \usort($backups, function(Backup $a, Backup $b) {
             $timestampA = $a->getCreatedAt()->getTimestamp();
             $timestampB = $b->getCreatedAt()->getTimestamp();
 
@@ -28,7 +26,7 @@ final class BackupCollection implements \IteratorAggregate, \Countable
             return ($timestampA < $timestampB) ? -1 : 1;
         });
 
-        $this->backups = array_values($backups);
+        $this->backups = \array_values($backups);
     }
 
     public function get(int $key): Backup
@@ -55,19 +53,13 @@ final class BackupCollection implements \IteratorAggregate, \Countable
         return $size;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator(): Traversable
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->backups);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count(): int
     {
-        return count($this->backups);
+        return \count($this->backups);
     }
 }

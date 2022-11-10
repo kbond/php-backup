@@ -19,10 +19,6 @@ class StreamDestination implements Destination
     private string $directory;
     private Filesystem $filesystem;
 
-    /**
-     * @param string $name
-     * @param string $directory
-     */
     public function __construct(string $name, string $directory)
     {
         $this->name = $name;
@@ -32,7 +28,7 @@ class StreamDestination implements Destination
 
     public function push(string $filename, LoggerInterface $logger): Backup
     {
-        $logger->info(sprintf('Copying %s to %s', $filename, $this->directory));
+        $logger->info(\sprintf('Copying %s to %s', $filename, $this->directory));
 
         $this->filesystem->copy($filename, $this->createPath($filename), true);
 
@@ -51,7 +47,7 @@ class StreamDestination implements Destination
 
     public function all(): BackupCollection
     {
-        $backups = array();
+        $backups = [];
 
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->in($this->directory)->files()->depth(0)->sortByModifiedTime();
@@ -68,13 +64,8 @@ class StreamDestination implements Destination
         return $this->name;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
     private function createPath(string $key): string
     {
-        return sprintf('%s/%s', $this->directory, basename($key));
+        return \sprintf('%s/%s', $this->directory, \basename($key));
     }
 }

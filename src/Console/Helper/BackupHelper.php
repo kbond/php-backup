@@ -25,9 +25,6 @@ final class BackupHelper extends Helper
         return $this->executor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'zenstruck_backup';
