@@ -11,27 +11,16 @@ use Zenstruck\Backup\ProfileRegistry;
  */
 final class BackupHelper extends Helper
 {
-    private $profileRegistry;
-    private $executor;
-
-    public function __construct(ProfileRegistry $profileRegistry, Executor $executor)
+    public function __construct(private ProfileRegistry $profileRegistry, private Executor $executor)
     {
-        $this->profileRegistry = $profileRegistry;
-        $this->executor = $executor;
     }
 
-    /**
-     * @return ProfileRegistry
-     */
-    public function getProfileRegistry()
+    public function getProfileRegistry(): ProfileRegistry
     {
         return $this->profileRegistry;
     }
 
-    /**
-     * @return Executor
-     */
-    public function getExecutor()
+    public function getExecutor(): Executor
     {
         return $this->executor;
     }
@@ -39,7 +28,7 @@ final class BackupHelper extends Helper
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'zenstruck_backup';
     }

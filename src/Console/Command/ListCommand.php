@@ -29,7 +29,7 @@ class ListCommand extends ProfileActionCommand
     /**
      * {@inheritdoc}
      */
-    protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output)
+    protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output): int
     {
         foreach ($profile->getDestinations() as $destination) {
             $this->listBackups($destination, $output);

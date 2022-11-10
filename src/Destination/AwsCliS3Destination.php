@@ -15,25 +15,18 @@ final class AwsCliS3Destination implements Destination
 {
     const DEFAULT_TIMEOUT = 300;
 
-    private $name;
-    private $bucket;
-    private $timeout;
-    private $options;
-
     /**
-     * @param string $bucket
-     * @param int    $timeout The process timeout in seconds
-     * @param array  $options s3cmd command options
+     * @param int $timeout The process timeout in seconds
+     * @param array $options s3cmd command options
      */
-    public function __construct($name, $bucket, $timeout = self::DEFAULT_TIMEOUT, array $options = array())
+    public function __construct(private string $name, private string $bucket, private int $timeout = self::DEFAULT_TIMEOUT, private array $options = [])
     {
-        $this->name = $name;
-        $this->bucket = $bucket;
-        $this->timeout = $timeout;
-        $this->options = $options;
     }
 
-    public function push($filename, LoggerInterface $logger)
+    /**
+     * @throws \Exception
+     */
+    public function push(string $filename, LoggerInterface $logger): Backup
     {
         $destination = $this->createPath($filename);
 
@@ -44,14 +37,17 @@ final class AwsCliS3Destination implements Destination
 
         $process->run();
 
-        if (!$process->isSuccessful() || false !== strpos($process->getErrorOutput(), 'ERROR:')) {
+        if (!$process->isSuccessful() || str_contains($process->getErrorOutput(), 'ERROR:')) {
             throw new \RuntimeException($process->getErrorOutput());
         }
 
         return $this->get($filename);
     }
 
-    public function get($key)
+    /**
+     * @throws \Exception
+     */
+    public function get(string $key): Backup
     {
         $destination = $this->createPath($key);
 
@@ -78,7 +74,10 @@ final class AwsCliS3Destination implements Destination
         throw new \BadMethodCallException(sprintf('%s::%s not yet implemented.', __CLASS__, __METHOD__));
     }
 
-    public function all()
+    /**
+     * @throws \Exception
+     */
+    public function all(): BackupCollection
     {
         $args = array_merge(['aws', 's3', 'ls'], $this->options, [trim($this->bucket, '/').'/']);
         $process = new Process($args, null, null, null, $this->timeout);
@@ -92,24 +91,23 @@ final class AwsCliS3Destination implements Destination
         return new BackupCollection($this->parseS3CmdListOutput($process->getOutput()));
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    private function createPath($key)
+    private function createPath($key): string
     {
         return sprintf('%s/%s', $this->bucket, basename($key));
     }
 
     /**
-     * @param string $output
-     *
      * @return Backup[]
+     * @throws \Exception
      */
-    private function parseS3CmdListOutput($output)
+    private function parseS3CmdListOutput(string $output): array
     {
-        $backups = array();
+        $backups = [];
 
         if (null === $output) {
             return $backups;
@@ -134,11 +132,9 @@ final class AwsCliS3Destination implements Destination
     }
 
     /**
-     * @param string
-     *
-     * @return Backup
+     * @throws \Exception
      */
-    private function parseS3CmdListRow($row)
+    private function parseS3CmdListRow(string $row): Backup
     {
         $columns = explode(' ', preg_replace('/\s+/', ' ', $row));
 

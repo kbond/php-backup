@@ -11,28 +11,22 @@ class SimpleNamer implements Namer
 {
     const DEFAULT_NAME = 'backup';
 
-    private $name;
+    private string $name;
 
     /**
      * @param string $name
      */
-    public function __construct($name = self::DEFAULT_NAME)
+    public function __construct(string $name = self::DEFAULT_NAME)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generate()
+    public function generate(): string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

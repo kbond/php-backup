@@ -4,6 +4,7 @@ namespace Zenstruck\Backup\Destination;
 
 use Psr\Log\LoggerInterface;
 use Zenstruck\Backup\Backup;
+use Zenstruck\Backup\BackupCollection;
 use Zenstruck\Backup\Destination;
 use Zenstruck\Backup\RotateStrategy;
 
@@ -12,53 +13,33 @@ use Zenstruck\Backup\RotateStrategy;
  */
 class RotatedDestination implements Destination
 {
-    private $destination;
-    private $rotateStrategy;
-
-    public function __construct(Destination $destination, RotateStrategy $rotateStrategy)
+    public function __construct(private Destination $destination, private RotateStrategy $rotateStrategy)
     {
-        $this->destination = $destination;
-        $this->rotateStrategy = $rotateStrategy;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function push($filename, LoggerInterface $logger)
+    public function push(string $filename, LoggerInterface $logger): Backup
     {
         $this->doRotate(Backup::fromFile($filename), $logger);
 
         return $this->destination->push($filename, $logger);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key)
+    public function get(string $key): Backup
     {
         return $this->destination->get($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($key)
     {
         $this->destination->delete($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function all()
+    public function all(): BackupCollection
     {
         return $this->destination->all();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->destination->getName();
     }

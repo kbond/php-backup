@@ -9,7 +9,7 @@ use Zenstruck\Backup\Destination\StreamDestination;
  */
 class StreamDestinationTest extends DestinationTest
 {
-    protected function createDestination($directory, $name = 'foo')
+    protected function createDestination(string $directory, string $name = 'foo'): StreamDestination
     {
         return new StreamDestination($name, $directory);
     }

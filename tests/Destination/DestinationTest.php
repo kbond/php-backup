@@ -20,7 +20,7 @@ abstract class DestinationTest extends TestCase
         $destinationDir = $this->getScratchDir();
         $destinationFile = $destinationDir.'/foo.txt';
         $destination = $this->createDestination($destinationDir);
-        $this->assertFileNotExists($destinationFile);
+        $this->assertFileDoesNotExist($destinationFile);
 
         $destination->push($file, new NullLogger());
         $this->assertFileExists($destinationFile);
@@ -34,7 +34,7 @@ abstract class DestinationTest extends TestCase
         $this->prepareScratch();
         $destination = $this->createDestination($this->getScratchDir());
         $backup = $destination->get('foo.txt');
-        $this->assertContains('foo.txt', $backup->getKey());
+        $this->assertStringContainsString('foo.txt', $backup->getKey());
         $this->assertSame(4, $backup->getSize());
         $this->assertInstanceOf('\DateTime', $backup->getCreatedAt());
     }
@@ -49,7 +49,7 @@ abstract class DestinationTest extends TestCase
 
         $destination = $this->createDestination($this->getScratchDir());
         $destination->delete('foo.txt');
-        $this->assertFileNotExists($this->getScratchDir().'/foo.txt');
+        $this->assertFileDoesNotExist($this->getScratchDir().'/foo.txt');
     }
 
     /**
@@ -83,7 +83,7 @@ abstract class DestinationTest extends TestCase
      *
      * @return Destination
      */
-    abstract protected function createDestination($directory, $name = 'foo');
+    abstract protected function createDestination(string $directory, string $name = 'foo'): Destination;
 
     private function prepareScratch()
     {

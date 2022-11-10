@@ -15,25 +15,22 @@ use Zenstruck\Backup\Destination;
  */
 class StreamDestination implements Destination
 {
-    private $name;
-    private $directory;
-    private $filesystem;
+    private string $name;
+    private string $directory;
+    private Filesystem $filesystem;
 
     /**
      * @param string $name
      * @param string $directory
      */
-    public function __construct($name, $directory)
+    public function __construct(string $name, string $directory)
     {
         $this->name = $name;
         $this->directory = $directory;
         $this->filesystem = new Filesystem();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function push($filename, LoggerInterface $logger)
+    public function push(string $filename, LoggerInterface $logger): Backup
     {
         $logger->info(sprintf('Copying %s to %s', $filename, $this->directory));
 
@@ -42,26 +39,17 @@ class StreamDestination implements Destination
         return $this->get($filename);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key)
+    public function get(string $key): Backup
     {
         return Backup::fromFile($this->createPath($key));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($key)
     {
         $this->filesystem->remove($this->createPath($key));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function all()
+    public function all(): BackupCollection
     {
         $backups = array();
 
@@ -75,10 +63,7 @@ class StreamDestination implements Destination
         return new BackupCollection($backups);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -88,7 +73,7 @@ class StreamDestination implements Destination
      *
      * @return string
      */
-    private function createPath($key)
+    private function createPath(string $key): string
     {
         return sprintf('%s/%s', $this->directory, basename($key));
     }

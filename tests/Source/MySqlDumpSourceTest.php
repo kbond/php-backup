@@ -20,21 +20,23 @@ class MySqlDumpSourceTest extends TestCase
         $file = $scratch.'/zenstruck_backup.sql';
 
         $source = new MySqlDumpSource('mysqldump', 'zenstruck_backup');
-        $this->assertFileNotExists($file);
+        $this->assertFileDoesNotExist($file);
 
         $source->fetch($scratch, new NullLogger());
         $this->assertFileExists($file);
-        $this->assertContains('Database: zenstruck_backup', file_get_contents($file));
+        $this->assertStringContainsString('Database: zenstruck_backup', file_get_contents($file));
     }
 
     /**
      * @test
      *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage mysqldump: Got error: 1049: Unknown database 'foobar' when selecting the database
+     *
+     *
      */
     public function it_fails_for_invalid_database()
     {
+        $this->expectExceptionMessage("mysqldump: Got error: 1049: Unknown database 'foobar' when selecting the database");
+        $this->expectException(\RuntimeException::class);
         $scratch = $this->getScratchDir();
 
         $source = new MySqlDumpSource('mysqldump', 'foobar');
@@ -44,11 +46,13 @@ class MySqlDumpSourceTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage mysqldump: Got error: 2005: Unknown MySQL server host 'foobar'
+     *
+     *
      */
     public function it_fails_for_invalid_host()
     {
+        $this->expectExceptionMessage("mysqldump: Got error: 2005: Unknown MySQL server host 'foobar'");
+        $this->expectException(\RuntimeException::class);
         $scratch = $this->getScratchDir();
 
         $source = new MySqlDumpSource('mysqldump', 'zenstruck_backup', 'foobar');

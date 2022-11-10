@@ -2,6 +2,7 @@
 
 namespace Zenstruck\Backup\Console\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,11 +29,12 @@ class RunCommand extends ProfileActionCommand
 
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
-    protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output)
+    protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output): int
     {
         $this->getBackupHelper()->getExecutor()->backup($profile, $input->getOption('clear'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

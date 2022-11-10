@@ -2,13 +2,15 @@
 
 namespace Zenstruck\Backup;
 
+use Traversable;
+
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class BackupCollection implements \IteratorAggregate, \Countable
 {
     /** @var Backup[] */
-    private $backups;
+    private array $backups;
 
     /**
      * @param Backup[] $backups
@@ -29,12 +31,7 @@ final class BackupCollection implements \IteratorAggregate, \Countable
         $this->backups = array_values($backups);
     }
 
-    /**
-     * @param int $key
-     *
-     * @return Backup
-     */
-    public function get($key)
+    public function get(int $key): Backup
     {
         return $this->backups[$key];
     }
@@ -42,15 +39,12 @@ final class BackupCollection implements \IteratorAggregate, \Countable
     /**
      * @return Backup[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->backups;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotalFileSize()
+    public function getTotalFileSize(): int
     {
         $size = 0;
 
@@ -64,7 +58,7 @@ final class BackupCollection implements \IteratorAggregate, \Countable
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->backups);
     }
@@ -72,7 +66,7 @@ final class BackupCollection implements \IteratorAggregate, \Countable
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->backups);
     }

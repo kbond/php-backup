@@ -20,9 +20,9 @@ class RotatedDestinationTest extends DestinationTest
         $logger->expects($this->exactly(3))
             ->method('info')
             ->withConsecutive(
-                array('Removing backup "yesterday" from destination "my_destination"'),
-                array('Removing backup "today" from destination "my_destination"'),
-                array('Removing backup "tomorrow" from destination "my_destination"')
+                ['Removing backup "yesterday" from destination "my_destination"'],
+                ['Removing backup "today" from destination "my_destination"'],
+                ['Removing backup "tomorrow" from destination "my_destination"']
             );
         $file = $this->getFixtureDir().'/foo.txt';
         $destination = $this->createMock('Zenstruck\Backup\Destination');
@@ -48,7 +48,7 @@ class RotatedDestinationTest extends DestinationTest
         $destination->push($file, $logger);
     }
 
-    protected function createDestination($directory, $name = 'foo')
+    protected function createDestination(string $directory, string $name = 'foo'): RotatedDestination
     {
         return new RotatedDestination(
             new StreamDestination($name, $directory),

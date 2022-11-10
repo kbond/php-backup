@@ -7,27 +7,20 @@ namespace Zenstruck\Backup;
  */
 final class Profile
 {
-    private $name;
-    private $scratchDir;
-    private $namer;
-    private $processor;
-    private $sources;
-    private $destinations;
+    private array $sources;
+    private array $destinations;
 
     /**
-     * @param string        $name
-     * @param string        $scratchDir
-     * @param Processor     $processor
-     * @param Namer         $namer
      * @param Source[]      $sources
      * @param Destination[] $destinations
      */
-    public function __construct($name, $scratchDir, Processor $processor, Namer $namer, array $sources, array $destinations)
+    public function __construct(private string    $name,
+                                private string    $scratchDir,
+                                private Processor $processor,
+                                private Namer     $namer,
+                                array             $sources,
+                                array             $destinations)
     {
-        $this->name = $name;
-        $this->scratchDir = $scratchDir;
-        $this->processor = $processor;
-        $this->namer = $namer;
 
         foreach ($sources as $source) {
             $this->addSource($source);
@@ -38,34 +31,22 @@ final class Profile
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getScratchDir()
+    public function getScratchDir(): string
     {
         return $this->scratchDir;
     }
 
-    /**
-     * @return Namer
-     */
-    public function getNamer()
+    public function getNamer(): Namer
     {
         return $this->namer;
     }
 
-    /**
-     * @return Processor
-     */
-    public function getProcessor()
+    public function getProcessor(): Processor
     {
         return $this->processor;
     }
@@ -73,7 +54,7 @@ final class Profile
     /**
      * @return Source[]
      */
-    public function getSources()
+    public function getSources(): array
     {
         return $this->sources;
     }
@@ -81,17 +62,17 @@ final class Profile
     /**
      * @return Destination[]
      */
-    public function getDestinations()
+    public function getDestinations(): array
     {
         return $this->destinations;
     }
 
-    private function addSource(Source $source)
+    private function addSource(Source $source): void
     {
         $this->sources[$source->getName()] = $source;
     }
 
-    private function addDestination(Destination $destination)
+    private function addDestination(Destination $destination): void
     {
         $this->destinations[$destination->getName()] = $destination;
     }

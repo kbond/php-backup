@@ -9,36 +9,26 @@ use Symfony\Component\Console\Helper\Helper;
  */
 final class Backup
 {
-    private $key;
-    private $size;
-    private $createdAt;
+    private string $key;
+    private int $size;
+    private \DateTime $createdAt;
 
     /**
      * @param string $path The path to the file.
-     *
-     * @return Backup
      */
-    public static function fromFile($path)
+    public static function fromFile(string $path): Backup
     {
         return new self($path, filesize($path), \DateTime::createFromFormat('U', filemtime($path)));
     }
 
-    /**
-     * @param string    $key
-     * @param int       $size
-     * @param \DateTime $createdAt
-     */
-    public function __construct($key, $size, \DateTime $createdAt)
+    public function __construct(string $key, int $size, \DateTime $createdAt)
     {
         $this->key = $key;
-        $this->size = (int) $size;
+        $this->size = $size;
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -46,23 +36,17 @@ final class Backup
     /**
      * @return int The size in bytes.
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
 
-    /**
-     * @return string
-     */
-    public function getFormattedSize()
+    public function getFormattedSize(): string
     {
         return \class_exists(Helper::class) ? Helper::formatMemory($this->size) : $this->size.' B';
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }

@@ -15,28 +15,18 @@ class S3CmdDestination implements Destination
 {
     const DEFAULT_TIMEOUT = 300;
 
-    private $name;
-    private $bucket;
-    private $timeout;
-    private $options;
-
     /**
-     * @param string $bucket
-     * @param int    $timeout The process timeout in seconds
-     * @param array  $options s3cmd command options
+     * @param int $timeout The process timeout in seconds
+     * @param array $options s3cmd command options
      */
-    public function __construct($name, $bucket, $timeout = self::DEFAULT_TIMEOUT, array $options = array())
+    public function __construct(private string $name, private string $bucket, private int $timeout = self::DEFAULT_TIMEOUT, private array $options = [])
     {
-        $this->name = $name;
-        $this->bucket = $bucket;
-        $this->timeout = $timeout;
-        $this->options = $options;
     }
 
     /**
-     * {@inheritdoc}
+     * @throws \Exception
      */
-    public function push($filename, LoggerInterface $logger)
+    public function push(string $filename, LoggerInterface $logger): Backup
     {
         $destination = $this->createPath($filename);
 
@@ -47,7 +37,7 @@ class S3CmdDestination implements Destination
 
         $process->run();
 
-        if (!$process->isSuccessful() || false !== strpos($process->getErrorOutput(), 'ERROR:')) {
+        if (!$process->isSuccessful() || str_contains($process->getErrorOutput(), 'ERROR:')) {
             throw new \RuntimeException($process->getErrorOutput());
         }
 
@@ -55,9 +45,9 @@ class S3CmdDestination implements Destination
     }
 
     /**
-     * {@inheritdoc}
+     * @throws \Exception
      */
-    public function get($key)
+    public function get(string $key): Backup
     {
         $destination = $this->createPath($key);
 
@@ -81,18 +71,15 @@ class S3CmdDestination implements Destination
         return new Backup($destination, $matches[1], new \DateTime($matches[2]));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($key)
+    public function delete(string $key)
     {
         throw new \BadMethodCallException(sprintf('%s::%s not yet implemented.', __CLASS__, __METHOD__));
     }
 
     /**
-     * {@inheritdoc}
+     * @throws \Exception
      */
-    public function all()
+    public function all(): BackupCollection
     {
         $args = array_merge(['s3cmd', 'ls'], $this->options, [trim($this->bucket, '/').'/']);
         $process = new Process($args, null, null, null, $this->timeout);
@@ -106,30 +93,21 @@ class S3CmdDestination implements Destination
         return new BackupCollection($this->parseS3CmdListOutput($process->getOutput()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
-    private function createPath($key)
+    private function createPath(string $key): string
     {
         return sprintf('%s/%s', $this->bucket, basename($key));
     }
 
     /**
-     * @param string $output
-     *
      * @return Backup[]
+     * @throws \Exception
      */
-    private function parseS3CmdListOutput($output)
+    private function parseS3CmdListOutput(string $output): array
     {
         $backups = array();
 
@@ -149,11 +127,9 @@ class S3CmdDestination implements Destination
     }
 
     /**
-     * @param string
-     *
-     * @return Backup
+     * @throws \Exception
      */
-    private function parseS3CmdListRow($row)
+    private function parseS3CmdListRow(string $row): Backup
     {
         $columns = explode(' ', preg_replace('/\s+/', ' ', $row));
 

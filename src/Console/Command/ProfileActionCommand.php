@@ -17,19 +17,13 @@ abstract class ProfileActionCommand extends BaseCommand
 {
     /**
      * Command specific code.
-     *
-     * @param Profile         $profile
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
      */
-    abstract protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output);
+    abstract protected function doExecute(Profile $profile, InputInterface $input, OutputInterface $output): int;
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $registry = $this->getBackupHelper()->getProfileRegistry();
 
@@ -43,10 +37,9 @@ abstract class ProfileActionCommand extends BaseCommand
     }
 
     /**
-     * @param OutputInterface           $output
      * @param ProfileRegistry|Profile[] $registry
      */
-    protected function listProfiles(OutputInterface $output, ProfileRegistry $registry)
+    protected function listProfiles(OutputInterface $output, ProfileRegistry|array $registry)
     {
         if (0 === count($registry)) {
             throw new \RuntimeException('No profiles configured.');
@@ -72,10 +65,7 @@ abstract class ProfileActionCommand extends BaseCommand
         $output->writeln('');
     }
 
-    /**
-     * @return BackupHelper
-     */
-    protected function getBackupHelper()
+    protected function getBackupHelper(): BackupHelper
     {
         return $this->getHelper('zenstruck_backup');
     }

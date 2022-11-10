@@ -54,13 +54,14 @@ class ProfileBuilderTest extends TestCase
      */
     public function it_throws_exceptions_when_asking_for_invalid_items($method, $message)
     {
-        $this->setExpectedException('\InvalidArgumentException', $message);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
 
         $builder = new ProfileBuilder();
         $builder->$method('foo');
     }
 
-    public static function invalidItemProvider()
+    public static function invalidItemProvider(): array
     {
         return array(
             array('getProcessor', 'Processor "foo" is not registered.'),

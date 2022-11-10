@@ -2,6 +2,7 @@
 
 namespace Zenstruck\Backup\Destination;
 
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
 use Zenstruck\Backup\Backup;
@@ -13,23 +14,23 @@ use Zenstruck\Backup\Destination;
  */
 class FlysystemDestination implements Destination
 {
-    private $name;
-    private $filesystem;
+    private string $name;
+    private FilesystemInterface $filesystem;
 
     /**
-     * @param string              $name
+     * @param string $name
      * @param FilesystemInterface $filesystem
      */
-    public function __construct($name, FilesystemInterface $filesystem)
+    public function __construct(string $name, FilesystemInterface $filesystem)
     {
         $this->name = $name;
         $this->filesystem = $filesystem;
     }
 
     /**
-     * {@inheritdoc}
+     * @throws FileNotFoundException
      */
-    public function push($filename, LoggerInterface $logger)
+    public function push(string $filename, LoggerInterface $logger): Backup
     {
         $key = basename($filename);
         $resource = fopen($filename, 'r');
@@ -42,9 +43,9 @@ class FlysystemDestination implements Destination
     }
 
     /**
-     * {@inheritdoc}
+     * @throws FileNotFoundException
      */
-    public function get($key)
+    public function get(string $key): Backup
     {
         return new Backup(
             $key,
@@ -54,17 +55,14 @@ class FlysystemDestination implements Destination
     }
 
     /**
-     * {@inheritdoc}
+     * @throws FileNotFoundException
      */
     public function delete($key)
     {
         $this->filesystem->delete($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function all()
+    public function all(): BackupCollection
     {
         $backups = array();
 
@@ -83,10 +81,7 @@ class FlysystemDestination implements Destination
         return new BackupCollection($backups);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

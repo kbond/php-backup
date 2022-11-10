@@ -26,7 +26,7 @@ abstract class ProfileActionCommandTest extends TestCase
             array('command' => $this->getCommandName())
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'foo  | null_processor | backup | null_source1, null_source2 | null_destination1, null_destination2',
             $commandTester->getDisplay()
         );
@@ -35,11 +35,13 @@ abstract class ProfileActionCommandTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Profile "foo" is not registered.
+     *
+     *
      */
     public function it_fails_when_asking_for_undefined_profile()
     {
+        $this->expectExceptionMessage("Profile \"foo\" is not registered.");
+        $this->expectException(\InvalidArgumentException::class);
         $commandTester = $this->createCommandTester();
         $commandTester->execute(
             array('command' => $this->getCommandName(), 'profile' => 'foo')
@@ -49,11 +51,13 @@ abstract class ProfileActionCommandTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage No profiles configured.
+     *
+     *
      */
     public function it_fails_when_listing_no_profiles()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("No profiles configured.");
         $commandTester = $this->createCommandTester();
         $commandTester->execute(
             array('command' => 'zenstruck:backup:run')
@@ -62,11 +66,11 @@ abstract class ProfileActionCommandTest extends TestCase
 
     /**
      * @param Profile[] $profiles
-     * @param null|int  $infoCalls
+     * @param int|null $infoCalls
      *
      * @return CommandTester
      */
-    protected function createCommandTester(array $profiles = array(), $infoCalls = 0)
+    protected function createCommandTester(array $profiles = array(), ?int $infoCalls = 0): CommandTester
     {
         $logger = $this->createMock('Psr\Log\LoggerInterface');
         $logger
@@ -85,10 +89,10 @@ abstract class ProfileActionCommandTest extends TestCase
     /**
      * @return ProfileActionCommand
      */
-    abstract protected function createCommand();
+    abstract protected function createCommand(): ProfileActionCommand;
 
     /**
      * @return string
      */
-    abstract protected function getCommandName();
+    abstract protected function getCommandName(): string;
 }

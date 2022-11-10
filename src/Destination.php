@@ -9,33 +9,13 @@ use Psr\Log\LoggerInterface;
  */
 interface Destination
 {
-    /**
-     * @param string          $filename
-     * @param LoggerInterface $logger
-     *
-     * @return Backup
-     */
-    public function push($filename, LoggerInterface $logger);
+    public function push(string $filename, LoggerInterface $logger): Backup;
 
-    /**
-     * @param string $key
-     *
-     * @return Backup
-     */
-    public function get($key);
+    public function get(string $key): Backup;
 
-    /**
-     * @param $key
-     */
-    public function delete($key);
+    public function delete(string $key);
 
-    /**
-     * @return BackupCollection
-     */
-    public function all();
+    public function all(): BackupCollection;
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 }
