@@ -14,7 +14,7 @@ use Zenstruck\Backup\Profile;
  */
 class ListCommand extends ProfileActionCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('zenstruck:backup:list')
@@ -32,7 +32,7 @@ class ListCommand extends ProfileActionCommand
         return 0;
     }
 
-    private function listBackups(Destination $destination, OutputInterface $output)
+    private function listBackups(Destination $destination, OutputInterface $output): void
     {
         $output->writeln(\sprintf('Existing backups for <info>%s</info>:', $destination->getName()));
         $output->writeln('');

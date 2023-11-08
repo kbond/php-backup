@@ -36,7 +36,7 @@ abstract class ProfileActionCommand extends BaseCommand
     /**
      * @param ProfileRegistry|Profile[] $registry
      */
-    protected function listProfiles(OutputInterface $output, ProfileRegistry|array $registry)
+    protected function listProfiles(OutputInterface $output, ProfileRegistry|array $registry): void
     {
         if (0 === \count($registry)) {
             throw new \RuntimeException('No profiles configured.');

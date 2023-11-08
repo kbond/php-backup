@@ -14,7 +14,7 @@ use Zenstruck\Backup\Profile;
  */
 class RunCommand extends ProfileActionCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('zenstruck:backup:run')
