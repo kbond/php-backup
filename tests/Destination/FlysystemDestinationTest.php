@@ -2,8 +2,8 @@
 
 namespace Zenstruck\Backup\Tests\Destination;
 
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Zenstruck\Backup\Destination\FlysystemDestination;
 
 /**
@@ -22,6 +22,6 @@ class FlysystemDestinationTest extends DestinationTest
 
     protected function createDestination(string $directory, string $name = 'foo'): FlysystemDestination
     {
-        return new FlysystemDestination($name, new Filesystem(new Local($directory)));
+        return new FlysystemDestination($name, new Filesystem(new LocalFilesystemAdapter($directory)));
     }
 }
