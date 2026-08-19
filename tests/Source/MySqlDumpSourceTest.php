@@ -24,7 +24,7 @@ class MySqlDumpSourceTest extends TestCase
         $file = $scratch.'/zenstruck_backup.sql';
         $db = $_ENV['MYSQL_DB_NAME'];
 
-        $source = new MySqlDumpSource('mysqldump', $db, user: $_ENV['MYSQL_DB_USER'], password: $_ENV['MYSQL_DB_PASSWORD']);
+        $source = new MySqlDumpSource('mysqldump', $db, host: $_ENV['MYSQL_DB_HOST'] ?? null, user: $_ENV['MYSQL_DB_USER'], password: $_ENV['MYSQL_DB_PASSWORD'], port: isset($_ENV['MYSQL_DB_PORT']) ? (int) $_ENV['MYSQL_DB_PORT'] : null);
         $this->assertFileDoesNotExist($file);
 
         $source->fetch($scratch, new NullLogger());
@@ -45,7 +45,7 @@ class MySqlDumpSourceTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $scratch = $this->getScratchDir();
 
-        $source = new MySqlDumpSource('mysqldump', 'foobar', user: $_ENV['MYSQL_DB_USER'], password: $_ENV['MYSQL_DB_PASSWORD']);
+        $source = new MySqlDumpSource('mysqldump', 'foobar', host: $_ENV['MYSQL_DB_HOST'] ?? null, user: $_ENV['MYSQL_DB_USER'], password: $_ENV['MYSQL_DB_PASSWORD'], port: isset($_ENV['MYSQL_DB_PORT']) ? (int) $_ENV['MYSQL_DB_PORT'] : null);
         $source->fetch($scratch, new NullLogger());
     }
 

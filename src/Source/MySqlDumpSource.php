@@ -21,6 +21,7 @@ class MySqlDumpSource implements Source
         private ?string $host = null,
         private string $user = self::DEFAULT_USER,
         private ?string $password = null,
+        private ?int $port = null,
         private ?string $sshHost = null,
         private ?string $sshUser = null,
         private int $sshPort = self::DEFAULT_SSH_PORT,
@@ -45,6 +46,10 @@ class MySqlDumpSource implements Source
 
         if (null !== $this->host) {
             $args[] = \sprintf('-h%s', $this->host);
+        }
+
+        if (null !== $this->port) {
+            $args[] = \sprintf('--port=%d', $this->port);
         }
 
         if (null !== $this->password) {
