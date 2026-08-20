@@ -2,7 +2,7 @@
 
 namespace Zenstruck\Backup\Tests\Console\Command;
 
-use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Tester\CommandTester;
 use Zenstruck\Backup\Console\Command\ProfileActionCommand;
 use Zenstruck\Backup\Console\Helper\BackupHelper;
@@ -22,9 +22,7 @@ abstract class ProfileActionCommandTest extends TestCase
     public function it_can_list_profiles()
     {
         $commandTester = $this->createCommandTester([$this->createNullProfile('foo')]);
-        $commandTester->execute(
-            ['command' => $this->getCommandName()]
-        );
+        $commandTester->execute([]);
 
         $this->assertStringContainsString(
             'foo  | null_processor | backup | null_source1, null_source2 | null_destination1, null_destination2',
@@ -40,9 +38,7 @@ abstract class ProfileActionCommandTest extends TestCase
         $this->expectExceptionMessage('Profile "foo" is not registered.');
         $this->expectException(\InvalidArgumentException::class);
         $commandTester = $this->createCommandTester();
-        $commandTester->execute(
-            ['command' => $this->getCommandName(), 'profile' => 'foo']
-        );
+        $commandTester->execute(['profile' => 'foo']);
     }
 
     /**
@@ -53,9 +49,7 @@ abstract class ProfileActionCommandTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No profiles configured.');
         $commandTester = $this->createCommandTester();
-        $commandTester->execute(
-            ['command' => 'zenstruck:backup:run']
-        );
+        $commandTester->execute([]);
     }
 
     /**
@@ -69,11 +63,10 @@ abstract class ProfileActionCommandTest extends TestCase
             ->method('info')
         ;
 
-        $application = new Application();
-        $application->add($this->createCommand());
-        $application->getHelperSet()->set(new BackupHelper(new ProfileRegistry($profiles), new Executor($logger)));
-
-        $command = $application->find($this->getCommandName());
+        $command = $this->createCommand();
+        $command->setHelperSet(new HelperSet([
+            'zenstruck_backup' => new BackupHelper(new ProfileRegistry($profiles), new Executor($logger)),
+        ]));
 
         return new CommandTester($command);
     }

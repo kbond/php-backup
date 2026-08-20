@@ -30,9 +30,7 @@ class ListCommandTest extends ProfileActionCommandTest
         );
 
         $commandTester = $this->createCommandTester([$profile]);
-        $commandTester->execute(
-            ['command' => $this->getCommandName(), 'profile' => 'foo']
-        );
+        $commandTester->execute(['profile' => 'foo']);
 
         $this->assertStringContainsString('foo.txt | 4', $commandTester->getDisplay());
         $this->assertStringContainsString('bam.txt | 4', $commandTester->getDisplay());
